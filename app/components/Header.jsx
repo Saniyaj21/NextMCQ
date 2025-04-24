@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useScrollDirection } from '../hooks/useScrollDirection';
+import { UserButton, SignedIn, SignedOut, SignInButton, SignUpButton } from '@clerk/nextjs';
 
 export default function Header() {
   const showHeader = useScrollDirection();
@@ -18,13 +19,31 @@ export default function Header() {
           >
             Next<span className="text-blue-600 group-hover:text-gray-800">MCQ</span>
           </Link>
+          
           <div className="flex items-center gap-4">
             <Link href="/" className="text-gray-600 hover:text-gray-900">
               Home
             </Link>
-            <Link href="/sign-in" className="text-gray-600 hover:text-gray-900">
-              Sign In
-            </Link>
+            
+            {/* Auth UI */}
+            <SignedOut>
+              <div className="flex gap-2">
+                <SignInButton mode="modal">
+                  <button className="bg-blue-600 text-white px-4 py-1.5 rounded-lg hover:bg-blue-700 transition duration-200 font-medium">
+                    Sign In
+                  </button>
+                </SignInButton>
+              </div>
+            </SignedOut>
+            
+            <SignedIn>
+              <div className="flex items-center gap-2">
+                <Link href="/dashboard" className="text-gray-600 hover:text-gray-900">
+                  Dashboard
+                </Link>
+                <UserButton afterSignOutUrl="/" />
+              </div>
+            </SignedIn>
           </div>
         </nav>
       </div>
