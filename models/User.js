@@ -16,12 +16,7 @@ const UserSchema = new mongoose.Schema({
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
       'Please provide a valid email'
     ]
-  },
-  password: {
-    type: String,
-    required: [true, 'Please provide a password'],
-    minlength: 6
-  },
+  }, 
   role: {
     type: String,
     enum: ['student', 'teacher'],

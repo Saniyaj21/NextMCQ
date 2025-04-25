@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import LandingPage from './components/landing/LandingPage';
-import Loading from './components/Loading';
+import LandingPage from '@/components/landing/LandingPage';
+import Loading from '@/components/Loading';
 import { UserButton, SignedIn, SignedOut, useAuth } from '@clerk/nextjs';
 
 export default function Home() {

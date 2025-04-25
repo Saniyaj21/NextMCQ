@@ -24,4 +24,4 @@ const LoadingFullscreen = () => {
   );
 };
 
-export default LoadingFullscreen;
+export default LoadingFullscreen; 
