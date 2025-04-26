@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { SignedIn, SignedOut, SignInButton, SignOutButton, useClerk } from '@clerk/nextjs';
 import { useState, useEffect } from 'react';
-import { FiHome, FiUser, FiLogOut, FiMenu, FiCheck } from 'react-icons/fi';
+import { FiHome, FiUser, FiLogOut, FiMenu, FiCheck, FiTrendingUp } from 'react-icons/fi';
 
 // Custom implementation of useScrollDirection
 function useScrollDirection() {
@@ -91,6 +91,10 @@ export default function Header() {
                   <FiHome className="text-lg" />
                   Dashboard
                 </Link>
+                <Link href="/leaderboard" onClick={closeMenu} className="text-gray-600 hover:text-gray-900 flex items-center gap-1">
+                  <FiTrendingUp className="text-lg" />
+                  Leaderboard
+                </Link>
                 <Link href="/profile" onClick={closeMenu} className="text-gray-600 hover:text-gray-900 flex items-center gap-1">
                   <FiUser className="text-lg" />
                   Profile
@@ -141,6 +145,10 @@ export default function Header() {
                   <FiHome className="text-lg" />
                   Dashboard
                 </Link>
+                <Link href="/leaderboard" onClick={closeMenu} className="w-full text-center py-2 text-gray-600 hover:text-gray-900 border-b border-gray-200 flex items-center justify-center gap-2">
+                  <FiTrendingUp className="text-lg" />
+                  Leaderboard
+                </Link>
                 <Link href="/profile" onClick={closeMenu} className="w-full text-center py-2 text-gray-600 hover:text-gray-900 border-b border-gray-200 flex items-center justify-center gap-2">
                   <FiUser className="text-lg" />
                   Profile
@@ -159,4 +167,4 @@ export default function Header() {
       </div>
     </header>
   )
-} 
+}
