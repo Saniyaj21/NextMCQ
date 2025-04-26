@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { FaStar, FaTrophy, FaMedal } from 'react-icons/fa';
 import { BiCoin } from 'react-icons/bi';
 
@@ -25,9 +26,12 @@ export default function LeaderboardRow({ user, index }) {
         </div>
       </td>
       <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap">
-        <div className="text-sm font-medium text-gray-900">
+        <Link 
+          href={`/profile/${user.id}`}
+          className="text-sm font-medium text-gray-900 hover:text-blue-600 transition-colors"
+        >
           {user.name}
-        </div>
+        </Link>
       </td>
       <td className="hidden sm:table-cell px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap">
         <div className="text-sm text-gray-500 capitalize">
