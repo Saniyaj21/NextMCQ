@@ -1,0 +1,539 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Read this file for project context and do things based on this and after you add any new feature or routes or components add that context in this file.
+
+
+
+
+# Next.js MCQ Project Context
+
+## Project Overview
+This is a Next.js-based web application that appears to be a Multiple Choice Question (MCQ) platform with authentication, user management, and dashboard functionality. The project uses modern web technologies and follows a well-structured architecture, implemented entirely in JavaScript (not TypeScript).
+
+## Technology Stack
+- Framework: Next.js 15.3.1 (App Router)
+- Authentication: Clerk (@clerk/nextjs ^4.29.9)
+- Database: MongoDB with Mongoose (^8.13.2)
+- Styling: Tailwind CSS (^4)
+- HTTP Client: Axios (^1.9.0)
+- Icons: React Icons (^5.5.0)
+- React: ^18.2.0
+- Development: Using Turbopack for faster development experience
+
+## Directory Structure
+
+### `/app`
+The main application directory using Next.js 13+ App Router structure:
+- `page.jsx`: Root page component with authentication flow and user DB check
+- `layout.jsx`: Root layout component
+- `/api`: API routes directory
+  - `/users`: User management endpoints
+    - `check/route.js`: Check if user exists in DB
+    - `profile/route.js`: Get user profile data
+    - `route.js`: Create new user
+- `/dashboard`: Dashboard related pages
+- `/profile`: User profile pages
+- `/invite`: Invitation system pages
+- `/onboard`: Onboarding flow pages
+- `/sign-in`: Authentication pages
+
+### `/components`
+Reusable React components:
+- `Header.jsx`: Main navigation header
+- `Loading.jsx` & `LoadingFullscreen.jsx`: Loading state components
+- `ProfileHeader.jsx`: User profile header component
+- `ReferralLinkGenerator.jsx`: Component for generating and sharing referral links
+- `/landing`: Landing page components
+- `/ui`: Shared UI components
+
+### `/lib`
+Utility functions and shared libraries:
+- `db.js`: Database connection management
+
+### `/models`
+Data models and database schemas:
+- `User.js`: User model with fields:
+  - `clerkId`: String (required, unique)
+  - `name`: String (required)
+  - `email`: String (required)
+  - `role`: String (enum: ['student', 'teacher'])
+  - `xpPoints`: Number (default: 0)
+  - `streak`: Number (default: 0)
+  - `lastActive`: Date
+  - `referralCode`: String (unique)
+  - `referredBy`: ObjectId (ref: 'User')
+  - `createdAt`: Date
+  - `updatedAt`: Date
+
+## Key Features
+1. Authentication System (using Clerk)
+   - Sign in/Sign up
+   - Automatic user creation in MongoDB after Clerk auth
+   - Onboarding flow for new users
+2. User Profile Management
+   - Display user information
+   - Show XP points and streak
+   - Referral code system
+   - Activity tracking
+3. Dashboard Interface
+4. Invitation/Referral System
+5. Responsive Design (Tailwind CSS)
+6. Loading States and UI Feedback
+
+## Authentication Flow
+1. User signs up/logs in through Clerk
+2. System checks if user exists in MongoDB
+3. If new user:
+   - Redirected to onboarding
+   - User record created in MongoDB
+4. If existing user:
+   - Directed to dashboard
+   - Profile data loaded from MongoDB
+
+## Profile Page Features
+1. User Information Display:
+   - Name
+   - Email
+   - Role (student/teacher)
+   - Member since date
+   - Referral code
+2. Statistics:
+   - XP Points with progress bar
+   - Current streak
+   - Last active date
+3. Referral System:
+   - Unique referral code
+   - Share functionality
+   - Copy to clipboard option
+
+## Development Guidelines
+1. Use appropriate component directory structure
+2. Implement proper error handling
+3. Follow consistent naming conventions
+4. Maintain responsive design
+5. Write clean, documented code
+6. Handle loading states appropriately
+7. Use proper JavaScript practices
+
+## Security Considerations
+1. Authentication handled by Clerk
+2. Protected routes and API endpoints
+3. Secure data handling
+4. Environment variable usage
+5. Input validation and sanitization
+
+## Database Operations
+1. User Management:
+   - Create new users after Clerk auth
+   - Update user activity and stats
+   - Track referrals and relationships
+2. Performance:
+   - Proper indexing on clerkId and referralCode
+   - Efficient queries for profile data
+3. Data Integrity:
+   - Required fields validation
+   - Unique constraints on critical fields
+   - Proper date handling for timestamps
+
+## Configuration Files
+- `next.config.mjs`: Next.js configuration
+- `tailwind.config.js`: Tailwind CSS configuration
+- `postcss.config.mjs`: PostCSS configuration
+- `eslint.config.mjs`: ESLint rules
+- `jsconfig.json`: JavaScript configuration and path aliases
+
+## Detailed Component Analysis
+
+### Page Components
+
+#### 1. Root Page (`app/page.jsx`)
+- Implements authentication flow using Clerk
+- Conditional rendering based on auth state:
+  - Shows landing page for unauthenticated users
+  - Shows dashboard for authenticated users
+- Includes loading states and user button
+- Uses client-side rendering with 'use client' directive
+
+#### 2. Dashboard Page (`app/dashboard/page.jsx`)
+- Personal dashboard for authenticated users
+- Features:
+  - Welcome section with user's name
+  - Practice and Browse Tests buttons
+  - Statistics cards showing:
+    - Tests completed
+    - XP earned
+  - Referral system integration
+  - Responsive grid layout
+  - Loading states management
+
+### Reusable Components
+
+#### 1. Landing Page (`components/landing/LandingPage.jsx`)
+- Modern, responsive landing page design
+- Sections:
+  - Hero section with CTA buttons
+  - Features grid showcasing platform benefits
+    - Unlimited Practice
+    - Mock Tests
+    - Leaderboards
+  - Final CTA section for user conversion
+- Uses Next.js Link for navigation
+- Integrates React icons
+- Responsive image handling
+- Tailwind CSS styling with hover effects
+
+#### 2. Loading Components
+- `Loading.jsx`: Basic loading spinner
+- `LoadingFullscreen.jsx`: Full-screen loading overlay
+- Used for smooth transitions and better UX
+
+#### 3. Header Components
+- `Header.jsx`: Main navigation header
+- `ProfileHeader.jsx`: User profile section header
+- Navigation and user interaction elements
+
+#### 4. ReferralLinkGenerator (`components/ReferralLinkGenerator.jsx`)
+- Generates and displays user referral codes
+- Copy-to-clipboard functionality
+- Social sharing options
+- Referral tracking system
+
+### API Routes Structure
+
+#### 1. User Management (`/api/users/`)
+- User profile operations
+- User preferences management
+- Progress tracking
+- XP and achievements
+
+#### 2. Authentication (`/api/check-user/`)
+- User verification endpoints
+- Session management
+- Authentication state checks
+
+## Page Structure and Routing
+
+### Authentication Pages
+- `/sign-in`: User login page
+- `/sign-up`: New user registration
+- Protected by Clerk authentication
+
+### User Flow Pages
+- `/onboard`: User onboarding process
+- `/profile`: User profile management
+- `/dashboard`: Main user interface
+- `/invite`: Referral system pages
+
+### Core Functionality Pages
+1. Dashboard
+   - Practice section
+   - Test overview
+   - Progress tracking
+   - Statistics display
+
+2. Practice Area
+   - MCQ display
+   - Answer submission
+   - Progress tracking
+   - Score calculation
+
+3. Profile Management
+   - User details
+   - Progress history
+   - Achievement display
+   - Settings management
+
+## Component Interactions
+
+### Data Flow
+1. Authentication State
+   - Managed by Clerk
+   - Propagated through context
+   - Controls access to protected routes
+
+2. User Data
+   - Fetched from API routes
+   - Cached for performance
+   - Updated in real-time
+
+3. MCQ Interaction
+   - Question fetching
+   - Answer submission
+   - Score calculation
+   - Progress update
+
+### State Management
+1. Authentication State
+   - Handled by Clerk hooks
+   - User session management
+   - Protected route handling
+
+2. User Progress
+   - Local state for active sessions
+   - API sync for persistence
+   - Real-time updates
+
+3. UI State
+   - Loading states
+   - Error handling
+   - Form management
+   - Modal controls
+
+## API Integration Points
+
+### External APIs
+1. Clerk Authentication
+   - User management
+   - Session handling
+   - OAuth integration
+
+### Internal APIs
+1. User Management
+   - Profile CRUD operations
+   - Progress tracking
+   - Achievement system
+
+2. MCQ System
+   - Question retrieval
+   - Answer validation
+   - Progress tracking
+   - Score calculation
+
+3. Referral System
+   - Code generation
+   - Referral tracking
+   - Reward distribution
+
+## UI/UX Considerations
+
+### Design System
+1. Colors
+   - Primary: Blue-600
+   - Secondary: Various accent colors
+   - System feedback colors
+
+2. Typography
+   - Headers: Bold, sized by importance
+   - Body: Regular weight, readable spacing
+   - Consistent font hierarchy
+
+3. Components
+   - Consistent border radius
+   - Uniform shadow styles
+   - Hover and active states
+   - Loading indicators
+
+### Responsive Design
+1. Breakpoints
+   - Mobile-first approach
+   - Tablet optimization
+   - Desktop layouts
+
+2. Layout Adjustments
+   - Grid system adaptation
+   - Component reflow
+   - Image scaling
+   - Navigation changes
+
+## Database Architecture
+
+### MongoDB Integration
+- Using Mongoose ODM version 8.13.2
+- Schema-based solution for data modeling
+- Built-in validation and middleware support
+- Supports both promise-based and callback patterns
+
+### Data Models
+
+#### 1. User Model
+```javascript
+// Example User Schema
+const userSchema = new mongoose.Schema({
+  clerkId: { type: String, required: true, unique: true },
+  username: { type: String, required: true },
+  email: { type: String, required: true },
+  xpPoints: { type: Number, default: 0 },
+  completedTests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Test' }],
+  createdAt: { type: Date, default: Date.now },
+  referralCode: { type: String, unique: true },
+  referredBy: { type: String },
+});
+```
+
+#### 2. MCQ Model
+```javascript
+// Example MCQ Schema
+const mcqSchema = new mongoose.Schema({
+  question: { type: String, required: true },
+  options: [{ type: String, required: true }],
+  correctAnswer: { type: Number, required: true },
+  explanation: String,
+  category: { type: String, required: true },
+  difficulty: { type: String, enum: ['easy', 'medium', 'hard'] },
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+});
+```
+
+#### 3. Test Model
+```javascript
+// Example Test Schema
+const testSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'MCQ' }],
+  duration: { type: Number, required: true }, // in minutes
+  difficulty: { type: String, enum: ['easy', 'medium', 'hard'] },
+  category: { type: String, required: true },
+});
+```
+
+### Database Operations
+
+#### 1. Connection Management
+- Implemented connection pooling
+- Mongoose connection handling in `lib/db.js`
+- Error handling and reconnection logic
+
+#### 2. CRUD Operations
+- Utilizing Mongoose methods for data operations
+- Implementing proper error handling
+- Supporting both async/await and Promise patterns
+
+#### 3. Indexes
+- Strategic indexes for performance optimization
+- Compound indexes for complex queries
+- Text indexes for search functionality
+
+## JavaScript Implementation Notes
+
+### Language Choice
+- Project is implemented in JavaScript (ECMAScript) without TypeScript
+- Uses modern JavaScript features (ES6+)
+- Follows Next.js 13+ conventions with App Router
+
+### Code Organization
+1. File Extensions
+   - `.js` for utility files
+   - `.jsx` for React components
+   - No TypeScript (`.ts` or `.tsx`) files
+
+2. Module System
+   - ES Modules (import/export)
+   - Dynamic imports for code splitting
+   - CommonJS patterns avoided
+
+3. Async Patterns
+   - Async/await for asynchronous operations
+   - Promise-based API calls
+   - Error boundaries for React components
+
+### Development Tools
+1. ESLint Configuration
+   - Using eslint-config-next
+   - Customized rules for JavaScript
+   - No TypeScript-specific rules
+
+2. Build Tools
+   - Turbopack for development
+   - Next.js built-in compiler for production
+   - PostCSS for CSS processing
+
+## API Routes Implementation
+
+### Database Connection
+```javascript
+// lib/db.js
+import mongoose from 'mongoose';
+
+const MONGODB_URI = process.env.MONGODB_URI;
+
+if (!MONGODB_URI) {
+  throw new Error('Please define the MONGODB_URI environment variable');
+}
+
+let cached = global.mongoose;
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
+
+async function dbConnect() {
+  if (cached.conn) {
+    return cached.conn;
+  }
+
+  cached.promise = mongoose.connect(MONGODB_URI, {
+    bufferCommands: false,
+  });
+
+  cached.conn = await cached.promise;
+  return cached.conn;
+}
+
+export default dbConnect;
+```
+
+### API Endpoints
+1. User Management
+```javascript
+// app/api/users/route.js
+import { NextResponse } from 'next/server';
+import dbConnect from '@/lib/db';
+import User from '@/models/User';
+
+export async function GET(request) {
+  await dbConnect();
+  // Implementation
+}
+
+export async function POST(request) {
+  await dbConnect();
+  // Implementation
+}
+```
+
+2. MCQ Operations
+```javascript
+// app/api/mcq/route.js
+import { NextResponse } from 'next/server';
+import dbConnect from '@/lib/db';
+import MCQ from '@/models/MCQ';
+
+export async function GET(request) {
+  await dbConnect();
+  // Implementation
+}
+```
+
+### Error Handling
+1. Database Errors
+```javascript
+try {
+  await dbConnect();
+  // Database operations
+} catch (error) {
+  console.error('Database Error:', error);
+  return NextResponse.json(
+    { error: 'Internal Server Error' },
+    { status: 500 }
+  );
+}
+```
+
+2. Validation Errors
+```javascript
+if (!isValid) {
+  return NextResponse.json(
+    { error: 'Validation Error' },
+    { status: 400 }
+  );
+}
+```
+
+This context provides a comprehensive understanding of the project structure, technologies, and best practices to follow during development.
+
+
+
+
