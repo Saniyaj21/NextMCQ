@@ -1,7 +1,7 @@
 'use client';
 
 import { useUser } from '@clerk/nextjs';
-import Loading from '@/components/Loading';
+import Loading from '@/components/ui/Loading';
 
 export default function OnboardLayout({ children }) {
   const { isLoaded } = useUser();
@@ -19,4 +19,4 @@ export default function OnboardLayout({ children }) {
       {children}
     </div>
   );
-} 
+}

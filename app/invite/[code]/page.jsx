@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import Loading from '@/components/Loading';
+import Loading from '@/components/ui/Loading';
 
 export default function InvitePage() {
   const { code } = useParams();
@@ -46,4 +46,4 @@ export default function InvitePage() {
       </div>
     </div>
   );
-} 
+}

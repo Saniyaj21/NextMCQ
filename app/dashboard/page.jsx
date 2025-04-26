@@ -1,7 +1,7 @@
 'use client';
 
 import { useUser } from '@clerk/nextjs';
-import Loading from '@/components/Loading';
+import Loading from '@/components/ui/Loading';
 
 export default function Dashboard() {
   const { isLoaded, user } = useUser();
@@ -49,4 +49,4 @@ export default function Dashboard() {
       </div>
     </div>
   );
-} 
+}

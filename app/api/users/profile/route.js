@@ -28,6 +28,34 @@ export async function GET(req) {
       // Continue with the request even if stats update fails
     }
 
+    // Calculate user's rank using aggregation pipeline
+    const userRankData = await User.aggregate([
+      { $sort: { xpPoints: -1 } },
+      {
+        $group: {
+          _id: null,
+          rankings: {
+            $push: {
+              userId: '$_id',
+              xpPoints: '$xpPoints'
+            }
+          }
+        }
+      },
+      {
+        $project: {
+          rank: {
+            $add: [
+              { $indexOfArray: ['$rankings.userId', user._id] },
+              1
+            ]
+          }
+        }
+      }
+    ]);
+
+    const rank = userRankData[0]?.rank || 1;
+
     return NextResponse.json({
       success: true,
       user: {
@@ -37,6 +65,7 @@ export async function GET(req) {
         coins: user.coins,
         xpPoints: user.xpPoints,
         level: user.level,
+        rank, // Add the calculated rank
         streak: {
           current: user.streak.current,
           longest: user.streak.longest,
@@ -63,4 +92,4 @@ export async function GET(req) {
       details: error.message 
     }, { status: 500 });
   }
-} 
+}
