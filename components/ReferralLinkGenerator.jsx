@@ -55,12 +55,7 @@ export default function ReferralLinkGenerator({ referralCode }) {
               readOnly
               className="flex-grow px-3 py-2 border border-gray-300 rounded-l-lg bg-gray-50 text-sm"
             />
-            <button
-              onClick={copyToClipboard}
-              className="px-3 py-2 bg-blue-600 text-white rounded-r-lg hover:bg-blue-700 flex items-center"
-            >
-              {copied ? <FiCheck className="h-5 w-5" /> : <FiCopy className="h-5 w-5" />}
-            </button>
+           
           </div>
           
           {/* Action Buttons */}

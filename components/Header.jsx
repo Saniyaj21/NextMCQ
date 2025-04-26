@@ -48,6 +48,10 @@ export default function Header() {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
   const handleSignOut = () => {
     setIsMenuOpen(false);
     signOut(() => {
@@ -63,6 +67,7 @@ export default function Header() {
         <nav className="flex items-center justify-between h-16">
           <Link 
             href="/" 
+            onClick={closeMenu}
             className="text-xl font-bold text-gray-800 transition-all duration-300 hover:scale-105 hover:text-blue-600 group animate-pulse"
           >
             Next<span className="text-blue-600 group-hover:text-gray-800">MCQ</span>
@@ -82,11 +87,11 @@ export default function Header() {
             
             <SignedIn>
               <div className="flex items-center gap-4">
-                <Link href="/dashboard" className="text-gray-600 hover:text-gray-900 flex items-center gap-1">
+                <Link href="/dashboard" onClick={closeMenu} className="text-gray-600 hover:text-gray-900 flex items-center gap-1">
                   <FiHome className="text-lg" />
                   Dashboard
                 </Link>
-                <Link href="/profile" className="text-gray-600 hover:text-gray-900 flex items-center gap-1">
+                <Link href="/profile" onClick={closeMenu} className="text-gray-600 hover:text-gray-900 flex items-center gap-1">
                   <FiUser className="text-lg" />
                   Profile
                 </Link>
@@ -132,11 +137,11 @@ export default function Header() {
             
             <SignedIn>
               <div className="w-full flex flex-col items-center gap-3">
-                <Link href="/dashboard" className="w-full text-center py-2 text-gray-600 hover:text-gray-900 border-b border-gray-200 flex items-center justify-center gap-2">
+                <Link href="/dashboard" onClick={closeMenu} className="w-full text-center py-2 text-gray-600 hover:text-gray-900 border-b border-gray-200 flex items-center justify-center gap-2">
                   <FiHome className="text-lg" />
                   Dashboard
                 </Link>
-                <Link href="/profile" className="w-full text-center py-2 text-gray-600 hover:text-gray-900 border-b border-gray-200 flex items-center justify-center gap-2">
+                <Link href="/profile" onClick={closeMenu} className="w-full text-center py-2 text-gray-600 hover:text-gray-900 border-b border-gray-200 flex items-center justify-center gap-2">
                   <FiUser className="text-lg" />
                   Profile
                 </Link>
