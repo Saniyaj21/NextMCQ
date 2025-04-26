@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import LandingPage from '@/components/landing/LandingPage';
-import Loading from '@/components/Loading';
+import Loading from '@/components/ui/Loading';
 import { UserButton, SignedIn, SignedOut, useAuth, useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 

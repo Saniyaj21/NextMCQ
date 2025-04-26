@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { FiUser, FiBook, FiGift, FiCheck } from 'react-icons/fi';
 import { BiCoin } from 'react-icons/bi';
 import axios from 'axios';
-import Loading from '@/components/Loading';
+import Loading from '@/components/ui/Loading';
 
 export default function OnboardPage() {
   const { isLoaded, user } = useUser();
@@ -245,4 +245,4 @@ export default function OnboardPage() {
       </div>
     </div>
   );
-} 
+}
