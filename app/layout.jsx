@@ -2,7 +2,7 @@ import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from '@clerk/nextjs';
 import Header from '@/components/Header';
-import { connectDB } from "@/lib/db";
+
 
 
 const geistSans = Geist({
@@ -25,7 +25,7 @@ export const metadata = {
   title: 'NextMCQ',
   description: 'Interactive MCQ Learning Platform',
 };
-connectDB()
+
 
 export default function RootLayout({ children }) {
   return (

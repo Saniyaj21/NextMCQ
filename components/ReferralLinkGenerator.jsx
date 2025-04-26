@@ -47,40 +47,59 @@ export default function ReferralLinkGenerator({ referralCode }) {
       
       <div className="p-4">
         <div className="flex flex-col space-y-3">
-          {/* Referral URL Input */}
-          <div className="flex items-center">
+          {/* Referral URL Input Group */}
+          <div className="relative">
             <input
               type="text"
               value={referralUrl}
               readOnly
-              className="flex-grow px-3 py-2 border border-gray-300 rounded-l-lg bg-gray-50 text-sm"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-sm pr-24"
             />
-           
+            <div className="absolute right-1 top-1/2 -translate-y-1/2">
+              <button
+                onClick={copyToClipboard}
+                className={`inline-flex items-center justify-center gap-1.5 px-3 py-1 rounded-md text-sm transition-all duration-200
+                  ${copied 
+                    ? 'bg-green-100 text-green-700 hover:bg-green-200' 
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+              >
+                {copied ? (
+                  <>
+                    <FiCheck className="h-4 w-4" />
+                    Copied!
+                  </>
+                ) : (
+                  <>
+                    <FiCopy className="h-4 w-4" />
+                    Copy
+                  </>
+                )}
+              </button>
+            </div>
           </div>
           
-          {/* Action Buttons */}
-          <div className="grid grid-cols-2 gap-3">
-            <button
-              onClick={copyToClipboard}
-              className="flex items-center justify-center gap-2 px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50"
-            >
-              <FiCopy className="h-4 w-4" />
-              Copy Link
-            </button>
-            
-            <button
-              onClick={shareLink}
-              className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-            >
-              <FiShare2 className="h-4 w-4" />
-              Share
-            </button>
-          </div>
+          {/* Share Button */}
+          <button
+            onClick={shareLink}
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            <FiShare2 className="h-4 w-4" />
+            Share with Friends
+          </button>
+        </div>
+        
+        {/* Success Message */}
+        <div className={`mt-3 text-sm transition-all duration-200 ${copied ? 'opacity-100' : 'opacity-0'}`}>
+          <p className="text-green-600 flex items-center gap-1.5">
+            <FiCheck className="h-4 w-4" />
+            Link copied to clipboard!
+          </p>
         </div>
         
         {/* Info Text */}
         <div className="mt-4 text-sm text-gray-500">
-          <p>Each friend who joins through your link earns you both bonus XP points!</p>
+          <p>Each friend will get 200 coins, and you will get 300 coins for every referal!</p>
         </div>
       </div>
     </div>
