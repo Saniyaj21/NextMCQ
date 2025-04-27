@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { SignedIn, SignedOut, SignInButton, SignOutButton, useClerk } from '@clerk/nextjs';
 import { useState, useEffect } from 'react';
-import { FiHome, FiUser, FiLogOut, FiMenu, FiCheck, FiTrendingUp } from 'react-icons/fi';
+import { FiHome, FiUser, FiLogOut, FiMenu, FiCheck, FiTrendingUp, FiBook } from 'react-icons/fi';
 
 // Custom implementation of useScrollDirection
 function useScrollDirection() {
@@ -78,7 +78,7 @@ export default function Header() {
             <SignedOut>
               <div className="flex gap-2">
                 <SignInButton mode="modal">
-                  <button className="bg-blue-600 text-white px-4 py-1.5 rounded-lg hover:bg-blue-700 transition duration-200 font-medium">
+                  <button className="bg-blue-50 text-blue-600 border-2 border-blue-500 px-4 py-1.5 rounded-lg hover:bg-blue-100 hover:border-blue-600 hover:text-blue-700 transition-all duration-200 font-medium">
                     Sign In
                   </button>
                 </SignInButton>
@@ -86,22 +86,26 @@ export default function Header() {
             </SignedOut>
             
             <SignedIn>
-              <div className="flex items-center gap-4">
-                <Link href="/dashboard" onClick={closeMenu} className="text-gray-600 hover:text-gray-900 flex items-center gap-1">
+              <div className="flex items-center gap-6">
+                <Link href="/dashboard" onClick={closeMenu} className="text-gray-600 hover:text-gray-900 flex items-center gap-2 text-sm">
                   <FiHome className="text-lg" />
                   Dashboard
                 </Link>
-                <Link href="/leaderboard" onClick={closeMenu} className="text-gray-600 hover:text-gray-900 flex items-center gap-1">
+                <Link href="/practice" onClick={closeMenu} className="text-gray-600 hover:text-gray-900 flex items-center gap-2 text-sm">
+                  <FiBook className="text-lg" />
+                  Practice
+                </Link>
+                <Link href="/leaderboard" onClick={closeMenu} className="text-gray-600 hover:text-gray-900 flex items-center gap-2 text-sm">
                   <FiTrendingUp className="text-lg" />
                   Leaderboard
                 </Link>
-                <Link href="/profile" onClick={closeMenu} className="text-gray-600 hover:text-gray-900 flex items-center gap-1">
+                <Link href="/profile" onClick={closeMenu} className="text-gray-600 hover:text-gray-900 flex items-center gap-2 text-sm">
                   <FiUser className="text-lg" />
                   Profile
                 </Link>
                 <button 
                   onClick={handleSignOut}
-                  className="bg-blue-600 text-white px-4 py-1.5 rounded-lg hover:bg-blue-700 transition duration-200 font-medium border border-blue-700 flex items-center gap-1"
+                  className="bg-blue-50 text-blue-600 border-2 border-blue-500 px-4 py-1.5 rounded-lg hover:bg-blue-100 hover:border-blue-600 hover:text-blue-700 transition-all duration-200 font-medium flex items-center gap-1"
                 >
                   <FiLogOut className="text-lg" />
                   Logout
@@ -126,13 +130,13 @@ export default function Header() {
 
         {/* Mobile Menu */}
         <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-          isMenuOpen ? 'max-h-60 opacity-100 pb-4' : 'max-h-0 opacity-0'
+          isMenuOpen ? 'max-h-80 opacity-100 pb-4' : 'max-h-0 opacity-0'
         }`}>
           <div className="flex flex-col items-center gap-4 pt-2">
             <SignedOut>
               <div className="w-full">
                 <SignInButton mode="modal">
-                  <button className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-200 font-medium">
+                  <button className="w-full bg-blue-50 text-blue-600 border-2 border-blue-500 px-4 py-2 rounded-lg hover:bg-blue-100 hover:border-blue-600 hover:text-blue-700 transition-all duration-200 font-medium">
                     Sign In
                   </button>
                 </SignInButton>
@@ -140,22 +144,26 @@ export default function Header() {
             </SignedOut>
             
             <SignedIn>
-              <div className="w-full flex flex-col items-center gap-3">
-                <Link href="/dashboard" onClick={closeMenu} className="w-full text-center py-2 text-gray-600 hover:text-gray-900 border-b border-gray-200 flex items-center justify-center gap-2">
+              <div className="w-full flex flex-col items-center gap-4">
+                <Link href="/dashboard" onClick={closeMenu} className="w-full text-center py-3 text-gray-600 hover:text-gray-900 border-b border-gray-200 flex items-center justify-center gap-2 text-sm">
                   <FiHome className="text-lg" />
                   Dashboard
                 </Link>
-                <Link href="/leaderboard" onClick={closeMenu} className="w-full text-center py-2 text-gray-600 hover:text-gray-900 border-b border-gray-200 flex items-center justify-center gap-2">
+                <Link href="/practice" onClick={closeMenu} className="w-full text-center py-3 text-gray-600 hover:text-gray-900 border-b border-gray-200 flex items-center justify-center gap-2 text-sm">
+                  <FiBook className="text-lg" />
+                  Practice
+                </Link>
+                <Link href="/leaderboard" onClick={closeMenu} className="w-full text-center py-3 text-gray-600 hover:text-gray-900 border-b border-gray-200 flex items-center justify-center gap-2 text-sm">
                   <FiTrendingUp className="text-lg" />
                   Leaderboard
                 </Link>
-                <Link href="/profile" onClick={closeMenu} className="w-full text-center py-2 text-gray-600 hover:text-gray-900 border-b border-gray-200 flex items-center justify-center gap-2">
+                <Link href="/profile" onClick={closeMenu} className="w-full text-center py-3 text-gray-600 hover:text-gray-900 border-b border-gray-200 flex items-center justify-center gap-2 text-sm">
                   <FiUser className="text-lg" />
                   Profile
                 </Link>
                 <button 
                   onClick={handleSignOut}
-                  className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-200 font-medium border border-blue-700 flex items-center justify-center gap-2"
+                  className="w-full bg-blue-50 text-blue-600 border-2 border-blue-500 px-4 py-2 rounded-lg hover:bg-blue-100 hover:border-blue-600 hover:text-blue-700 transition-all duration-200 font-medium flex items-center justify-center gap-2 text-sm"
                 >
                   <FiLogOut className="text-lg" />
                   Logout
