@@ -20,6 +20,7 @@ This is a Next.js-based web application that appears to be a Multiple Choice Que
 - User profiles with XP and coins
 - Progress tracking
 - Referral system
+- Leaderboard: On small screens, the Level column is hidden for better mobile UX. The XP column now uses a custom XP icon from the public/icons directory instead of a star icon.
 
 ### MCQ System
 - Create and manage tests

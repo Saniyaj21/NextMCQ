@@ -3,6 +3,8 @@
 import { FiUser, FiBook } from 'react-icons/fi';
 import { FaStar } from 'react-icons/fa';
 import { BiCoin } from 'react-icons/bi';
+import Image from 'next/image';
+import xpIcon from '@/public/icons/xpicon.png';
 
 export default function LeaderboardFilters({ 
   selectedFilter, 
@@ -65,7 +67,7 @@ export default function LeaderboardFilters({
                   : 'bg-gray-50 text-gray-600 hover:bg-green-50 hover:text-green-600'
               }`}
             >
-              <FaStar className="text-yellow-500 text-sm" />
+              <Image src={xpIcon} width={16} height={16} alt="xp" className="inline-block" />
               <span className="text-xs">XP Points</span>
             </button>
             <button 

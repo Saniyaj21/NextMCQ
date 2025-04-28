@@ -14,8 +14,8 @@ export default function LeaderboardTable({ isLoading, leaderboardData }) {
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
+      <div>
+        <table className="w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
               <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-16">
@@ -33,7 +33,7 @@ export default function LeaderboardTable({ isLoading, leaderboardData }) {
               <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Coins
               </th>
-              <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="hidden sm:table-cell px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Level
               </th>
             </tr>
@@ -45,7 +45,10 @@ export default function LeaderboardTable({ isLoading, leaderboardData }) {
               ))
             ) : (
               <tr>
-                <td colSpan="6" className="px-6 py-8 text-center text-gray-500">
+                <td colSpan="5" className="px-6 py-8 text-center text-gray-500 sm:hidden">
+                  No leaderboard data available yet.
+                </td>
+                <td colSpan="6" className="px-6 py-8 text-center text-gray-500 hidden sm:table-cell">
                   No leaderboard data available yet.
                 </td>
               </tr>
