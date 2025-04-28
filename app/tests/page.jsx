@@ -170,7 +170,7 @@ export default function TestsPage() {
 
                 <div className="flex items-center gap-3">
                   <Link
-                    href={`/tests/${test._id}/edit`}
+                    href={`/tests/edit/${test._id}`}
                     className="flex-1 bg-gray-50 border border-gray-200 text-gray-700 px-4 py-2.5 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-100 hover:border-gray-300 transition-all font-medium"
                   >
                     <FiEdit3 className="w-4 h-4" /> Edit

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db';
 import Test from '@/models/Test';
 import User from '@/models/User';
+import Question from '@/models/Question';
 
 export async function GET() {
   try {
@@ -17,11 +18,32 @@ export async function GET() {
       })
       .sort({ createdAt: -1 });
 
+    // Get question counts for each test
+    const questionCounts = await Question.aggregate([
+      {
+        $match: {
+          testId: { $in: tests.map(test => test._id) }
+        }
+      },
+      {
+        $group: {
+          _id: '$testId',
+          questionCount: { $sum: 1 }
+        }
+      }
+    ]);
+
+    // Create a map of test ID to question count
+    const questionCountMap = new Map(
+      questionCounts.map(item => [item._id.toString(), item.questionCount])
+    );
+
     return NextResponse.json({
       success: true,
       tests: tests.map(test => ({
         ...test.toObject(),
-        creatorName: test.creator?.name || 'Unknown'
+        creatorName: test.creator?.name || 'Unknown',
+        questionCount: questionCountMap.get(test._id.toString()) || 0
       }))
     });
 
