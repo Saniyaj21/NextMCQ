@@ -15,6 +15,8 @@ export default function PracticePage() {
   const [filterSubject, setFilterSubject] = useState('all');
   const [subjects, setSubjects] = useState([]);
 
+  console.log(tests);
+  
   // Fetch tests
   useEffect(() => {
     async function fetchTests() {
@@ -204,7 +206,7 @@ export default function PracticePage() {
                   <div className="text-xs text-gray-500">Duration</div>
                 </div>
                 <div className="text-center border-l border-r border-gray-100">
-                  <div className="text-sm font-semibold text-gray-900">{test.questions?.length || 0}</div>
+                  <div className="text-sm font-semibold text-gray-900">{test.questionCount|| 0}</div>
                   <div className="text-xs text-gray-500">Questions</div>
                 </div>
                 <div className="text-center">

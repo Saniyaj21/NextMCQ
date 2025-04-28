@@ -50,6 +50,13 @@ export default function Dashboard() {
                 <FiPlus className="w-4 h-4" />
                 Create Test
               </Link>
+              <Link 
+                href="/questions/create" 
+                className="bg-blue-50 text-blue-600 border-2 border-blue-500 px-4 py-1.5 rounded-lg hover:bg-blue-100 hover:border-blue-600 hover:text-blue-700 transition-all font-medium flex items-center gap-2"
+              >
+                <FiPlus className="w-4 h-4" />
+                Add Question
+              </Link>
             </div>
           </div>
           

@@ -54,4 +54,58 @@ export async function DELETE(req, { params }) {
       { status: 500 }
     );
   }
+}
+
+export async function GET(req, { params }) {
+  try {
+    await connectDB();
+    
+    // Get the test ID from the URL
+    const { testId } = params;
+    
+    // Get the creator's Clerk ID from the query params
+    const creatorId = req.nextUrl.searchParams.get('creatorId');
+    
+    if (!creatorId) {
+      return NextResponse.json(
+        { error: 'Creator ID is required' },
+        { status: 400 }
+      );
+    }
+
+    // Get MongoDB user from Clerk ID
+    const user = await User.findOne({ clerkId: creatorId });
+    
+    if (!user) {
+      return NextResponse.json(
+        { error: 'User not found' },
+        { status: 404 }
+      );
+    }
+
+    // Find the test, ensuring it belongs to the user
+    const test = await Test.findOne({
+      _id: testId,
+      creator: user._id
+    });
+
+    if (!test) {
+      return NextResponse.json(
+        { error: 'Test not found or unauthorized' },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({ 
+      success: true,
+      test
+    });
+
+  } catch (error) {
+    console.error('Error fetching test:', error);
+    return NextResponse.json(
+      { error: 'Failed to fetch test', details: error.message },
+      { status: 500 }
+    );
+  }
 } 
