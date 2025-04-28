@@ -5,7 +5,7 @@ import User from '@/models/User';
 export async function GET(req, { params }) {
   try {
     await connectDB();
-    const userId = params.userId;
+    const { userId } = await params;
     
     if (!userId) {
       return NextResponse.json({ error: 'userId is required' }, { status: 400 });

@@ -5,6 +5,7 @@ import { useUser } from '@clerk/nextjs';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { FiPlus, FiX, FiCheck, FiAlertCircle } from 'react-icons/fi';
 import Loading from '@/components/ui/Loading';
+import toast from 'react-hot-toast';
 
 export default function CreateQuestionPage() {
   const { isLoaded, user } = useUser();
@@ -113,6 +114,22 @@ export default function CreateQuestionPage() {
       
       if (!response.ok) {
         throw new Error(data.error || 'Failed to create question');
+      }
+
+      // Show reward toast
+      if (data.rewards) {
+        toast.success(
+          <div>
+            <p>Question created successfully!</p>
+            <p className="text-sm mt-1">
+              Rewards: +{data.rewards.xp} XP, +{data.rewards.coins} coins
+            </p>
+          </div>,
+          {
+            duration: 5000,
+            icon: '🎉',
+          }
+        );
       }
 
       // Redirect to the test page if only one test was selected
