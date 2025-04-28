@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import { FaStar, FaTrophy, FaMedal } from 'react-icons/fa';
 import { BiCoin } from 'react-icons/bi';
+import Image from 'next/image';
+import xpIcon from '@/public/icons/xpicon.png';
 
 export default function LeaderboardRow({ user, index }) {
   const getRankIcon = (rank) => {
@@ -25,7 +27,7 @@ export default function LeaderboardRow({ user, index }) {
           {getRankIcon(user.rank)}
         </div>
       </td>
-      <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap">
+      <td className="pl-1 pr-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap">
         <Link 
           href={`/profile/${user.id}`}
           className="text-sm font-medium text-gray-900 hover:text-blue-600 transition-colors"
@@ -40,17 +42,17 @@ export default function LeaderboardRow({ user, index }) {
       </td>
       <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap">
         <div className="text-sm text-gray-900 flex items-center gap-1">
-          <FaStar className="text-yellow-400" />
+          <span className="hidden sm:inline-block"><Image src={xpIcon} width={16} height={16} alt="xp" className="inline-block" /></span>
           {user.xpPoints.toLocaleString()}
         </div>
       </td>
       <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap">
         <div className="text-sm text-gray-900 flex items-center gap-1">
-          <BiCoin className="text-yellow-500" />
+          <span className="hidden sm:inline-block"><BiCoin className="text-yellow-500" /></span>
           {user.coins.toLocaleString()}
         </div>
       </td>
-      <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap">
+      <td className="hidden sm:table-cell px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap">
         <div className="text-sm font-medium text-blue-600">
           {user.level}
         </div>
