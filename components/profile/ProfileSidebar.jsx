@@ -1,5 +1,7 @@
 import { FiUser, FiBarChart2, FiUsers, FiStar } from 'react-icons/fi';
 import { BiCoin } from 'react-icons/bi';
+import xpIcon from '@/public/icons/xpicon.png';
+import Image from 'next/image';
 
 export default function ProfileSidebar({ user, userData, activeTab, setActiveTab }) {
   if (!userData) return null;
@@ -28,8 +30,8 @@ export default function ProfileSidebar({ user, userData, activeTab, setActiveTab
               <div className="flex justify-between items-center mb-2">
                 <span className="text-sm text-gray-600">Coins</span>
                 <span className="text-sm font-medium flex items-center gap-1">
-                  <BiCoin className="text-yellow-500" />
                   {userData.coins}
+                  <BiCoin className="text-yellow-500" />
                 </span>
               </div>
             </div>
@@ -37,7 +39,9 @@ export default function ProfileSidebar({ user, userData, activeTab, setActiveTab
             <div>
               <div className="flex justify-between items-center mb-2">
                 <span className="text-sm text-gray-600">Level {userData.level}</span>
-                <span className="text-sm font-medium">{userData.xpPoints} XP</span>
+                <span className="text-sm font-medium">{userData.xpPoints}
+                <Image src={xpIcon} width={16} height={16} alt="xp" className="inline-block ml-1" />
+                </span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <div
@@ -64,27 +68,24 @@ export default function ProfileSidebar({ user, userData, activeTab, setActiveTab
         <nav>
           <button
             onClick={() => setActiveTab('profile')}
-            className={`w-full text-left py-3 px-4 rounded-lg mb-2 flex items-center gap-3 ${
-              activeTab === 'profile' ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50'
-            }`}
+            className={`w-full text-left py-3 px-4 rounded-lg mb-2 flex items-center gap-3 ${activeTab === 'profile' ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50'
+              }`}
           >
             <FiUser className="text-lg" />
             <span>Profile Information</span>
           </button>
           <button
             onClick={() => setActiveTab('stats')}
-            className={`w-full text-left py-3 px-4 rounded-lg mb-2 flex items-center gap-3 ${
-              activeTab === 'stats' ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50'
-            }`}
+            className={`w-full text-left py-3 px-4 rounded-lg mb-2 flex items-center gap-3 ${activeTab === 'stats' ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50'
+              }`}
           >
             <FiBarChart2 className="text-lg" />
             <span>Stats & Achievements</span>
           </button>
           <button
             onClick={() => setActiveTab('referrals')}
-            className={`w-full text-left py-3 px-4 rounded-lg mb-2 flex items-center gap-3 ${
-              activeTab === 'referrals' ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50'
-            }`}
+            className={`w-full text-left py-3 px-4 rounded-lg mb-2 flex items-center gap-3 ${activeTab === 'referrals' ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50'
+              }`}
           >
             <FiUsers className="text-lg" />
             <span>Referrals</span>

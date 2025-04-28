@@ -1,5 +1,7 @@
 import { FiStar, FiBarChart2, FiAward, FiTrendingUp } from 'react-icons/fi';
 import { BiCoin } from 'react-icons/bi';
+import Image from 'next/image';
+import xpIcon from '@/public/icons/xpicon.png';
 
 export default function ProfileStats({ userData }) {
   if (!userData) return null;
@@ -15,7 +17,9 @@ export default function ProfileStats({ userData }) {
             <FiStar className="text-blue-600 text-xl" />
           </div>
           <p className="text-3xl font-bold text-blue-600 mt-2">Level {userData.level}</p>
-          <p className="text-sm text-gray-600">{userData.xpPoints.toLocaleString()} XP Total</p>
+          <span className="text-sm font-medium">{userData.xpPoints.toLocaleString()}
+            <Image src={xpIcon} width={16} height={16} alt="xp" className="inline-block ml-1" />
+          </span>
         </div>
 
         <div className="bg-purple-50 rounded-lg p-4 border border-purple-100">
