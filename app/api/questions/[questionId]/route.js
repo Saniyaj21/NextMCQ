@@ -13,8 +13,9 @@ export async function DELETE(request, { params }) {
     }
 
     await connectDB();
-    const { questionId } = params;
-    const testId = request.nextUrl.searchParams.get('testId');
+    const { questionId } = await params;
+    const { searchParams } = new URL(request.url);
+    const testId = searchParams.get('testId');
 
     if (!testId) {
       return NextResponse.json({ error: 'Test ID is required' }, { status: 400 });
@@ -62,7 +63,7 @@ export async function GET(request, { params }) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { questionId } = params;
+    const { questionId } = await params;
     await connectDB();
 
     // Find question and populate test details
@@ -100,7 +101,7 @@ export async function PUT(request, { params }) {
     }
 
     await connectDB();
-    const { questionId } = params;
+    const { questionId } = await params;
     const data = await request.json();
     const { text, options, explanation, difficulty } = data;
 

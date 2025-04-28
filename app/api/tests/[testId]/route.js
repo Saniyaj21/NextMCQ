@@ -2,15 +2,23 @@ import { Test, User } from '@/models';
 import { connectDB } from '@/lib/db';
 import { NextResponse } from "next/server";
 
-export async function DELETE(req, { params }) {
+export async function DELETE(request, { params }) {
   try {
     await connectDB();
     
-    // Get the test ID from the URL
-    const { testId } = params;
+    // Get and await the test ID from params
+    const { testId } = await params;
+    
+    if (!testId) {
+      return NextResponse.json(
+        { error: 'Test ID is required' },
+        { status: 400 }
+      );
+    }
     
     // Get the creator's Clerk ID from the query params
-    const creatorId = req.nextUrl.searchParams.get('creatorId');
+    const { searchParams } = new URL(request.url);
+    const creatorId = searchParams.get('creatorId');
     
     if (!creatorId) {
       return NextResponse.json(
@@ -56,15 +64,23 @@ export async function DELETE(req, { params }) {
   }
 }
 
-export async function GET(req, { params }) {
+export async function GET(request, { params }) {
   try {
     await connectDB();
     
-    // Get the test ID from the URL
-    const { testId } = params;
+    // Get and await the test ID from params
+    const { testId } = await params;
+    
+    if (!testId) {
+      return NextResponse.json(
+        { error: 'Test ID is required' },
+        { status: 400 }
+      );
+    }
     
     // Get the creator's Clerk ID from the query params
-    const creatorId = req.nextUrl.searchParams.get('creatorId');
+    const { searchParams } = new URL(request.url);
+    const creatorId = searchParams.get('creatorId');
     
     if (!creatorId) {
       return NextResponse.json(

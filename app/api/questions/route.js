@@ -62,9 +62,28 @@ export async function POST(request) {
       )
     );
 
+    // Award XP and coins to the user
+    const xpReward = 10; // XP for creating a question
+    const coinReward = 15; // Coins for creating a question
+    
+    await User.findByIdAndUpdate(user._id, {
+      $inc: { 
+        xpPoints: xpReward,
+        coins: coinReward
+      }
+    });
+
+    // Calculate new level after XP update
+    const updatedUser = await User.findById(user._id);
+    await updatedUser.calculateLevel();
+
     return NextResponse.json({ 
       success: true,
       questions,
+      rewards: {
+        xp: xpReward,
+        coins: coinReward
+      },
       message: `Question added to ${testIds.length} test${testIds.length > 1 ? 's' : ''}`
     }, { status: 201 });
   } catch (error) {
