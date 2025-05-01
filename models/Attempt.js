@@ -43,6 +43,19 @@ const AttemptSchema = new mongoose.Schema({
   completedAt: {
     type: Date,
     default: Date.now
+  },
+  scorePercentage: {
+    type: Number,
+    required: true
+  },
+  difficulty: {
+    type: String,
+    enum: ['easy', 'medium', 'hard'],
+    required: true
+  },
+  totalQuestions: {
+    type: Number,
+    required: true
   }
 }, { timestamps: true });
 

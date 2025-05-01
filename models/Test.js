@@ -26,9 +26,7 @@ const TestSchema = new mongoose.Schema({
   },
   timeLimit: {
     type: Number,
-    default: 60, // 60 minutes default
-    min: 5,
-    max: 180
+    default: 0
   },
   isPublic: {
     type: Boolean,

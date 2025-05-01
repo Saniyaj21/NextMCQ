@@ -43,6 +43,10 @@ export async function DELETE(request, { params }) {
     // Delete question
     await Question.findByIdAndDelete(questionId);
 
+    // Update the test's timeLimit after deleting the question
+    const questionCount = await Question.countDocuments({ testId });
+    await Test.findByIdAndUpdate(testId, { timeLimit: questionCount });
+
     return NextResponse.json({ 
       success: true,
       message: 'Question deleted successfully' 

@@ -51,15 +51,19 @@ export async function POST(request) {
 
     // Create questions for all tests
     const questions = await Promise.all(
-      testIds.map(testId =>
-        Question.create({
+      testIds.map(async testId => {
+        const question = await Question.create({
           testId,
           text,
           options,
           explanation,
           difficulty,
-        })
-      )
+        });
+        // Update the test's timeLimit after adding the question
+        const questionCount = await Question.countDocuments({ testId });
+        await Test.findByIdAndUpdate(testId, { timeLimit: questionCount });
+        return question;
+      })
     );
 
     // Award XP and coins to the user
