@@ -150,19 +150,9 @@ export default function CreateTest() {
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Time Limit (minutes)
-            </label>
-            <input
-              type="number"
-              name="timeLimit"
-              value={formData.timeLimit}
-              onChange={handleChange}
-              min="5"
-              max="180"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+          {/* Informational message about time limit */}
+          <div className="bg-blue-50 border border-blue-200 text-blue-700 rounded-lg px-4 py-3 text-sm">
+            Test time will be automatically set to <span className="font-semibold">1 minute per question</span>.
           </div>
 
           <div className="flex items-center gap-2">

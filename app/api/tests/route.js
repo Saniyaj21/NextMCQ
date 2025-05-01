@@ -24,7 +24,6 @@ export async function POST(req) {
       chapter: data.chapter,
       description: data.description,
       creator: user._id, // Use MongoDB user ID
-      timeLimit: data.timeLimit || 60,
       isPublic: data.isPublic || false
     });
 
