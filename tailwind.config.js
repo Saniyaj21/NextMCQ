@@ -10,7 +10,8 @@ module.exports = {
       animation: {
         fadeIn: 'fadeIn 1s forwards',
         popIn: 'popIn 1.2s ease-out forwards',
-        'fade-in': 'fadeIn 1s ease-in forwards'
+        'fade-in': 'fadeIn 1s ease-in forwards',
+        'reward-float': 'reward-float 2s ease-out forwards'
       },
       keyframes: {
         fadeIn: {
@@ -40,6 +41,12 @@ module.exports = {
           '0%': { width: '0%' },
           '50%': { width: '100%' },
           '100%': { width: '0%' }
+        },
+        'reward-float': {
+          '0%': { transform: 'translate(-50%, 0)', opacity: '0' },
+          '10%': { transform: 'translate(-50%, -10px)', opacity: '1' },
+          '90%': { transform: 'translate(-50%, -50px)', opacity: '1' },
+          '100%': { transform: 'translate(-50%, -60px)', opacity: '0' }
         }
       }
     },
