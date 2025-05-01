@@ -27,63 +27,20 @@ export default function TestPage() {
   const [rewards, setRewards] = useState({ coins: 0, xp: 0 });
   const [showReward, setShowReward] = useState(false);
   
-  // Mock test data for UI development
   useEffect(() => {
-    const mockTest = {
-      _id: testId,
-      title: "Sample Mathematics Test",
-      subject: "Mathematics",
-      chapter: "Algebra",
-      difficulty: "medium",
-      timeLimit: 30,
-      totalQuestions: 10,
-      description: "Test your knowledge of basic algebraic concepts",
-      attemptsCount: 156,
-      rating: 4.5,
-      isPublic: true,
-      creator: {
-        name: "John Doe",
-        _id: "123"
-      },
-      questions: [
-        {
-          id: 1,
-          text: "What is the value of x in the equation 2x + 5 = 13?",
-          image: null,
-          options: [
-            { text: "x = 3", image: null },
-            { text: "x = 4", image: null },
-            { text: "x = 5", image: null },
-            { text: "x = 6", image: null }
-          ],
-          correctOption: 1,
-          difficulty: "medium",
-          explanation: "2x + 5 = 13\n2x = 8\nx = 4"
-        }
-      ]
-    };
-
-    // Mock previous attempts
-    const mockAttempts = [
-      { score: 8, maxScore: 10, timeSpent: 1200, completedAt: new Date() },
-      { score: 7, maxScore: 10, timeSpent: 1500, completedAt: new Date(Date.now() - 86400000) }
-    ];
-
-    // Updated mock leaderboard with both XP and coins
-    const mockLeaderboard = [
-      { userId: "1", name: "Alice", xp: 50, coins: 45, position: 1, avatar: null },
-      { userId: "2", name: "Bob", xp: 45, coins: 40, position: 2, avatar: null },
-      { userId: "3", name: "Charlie", xp: 40, coins: 35, position: 3, avatar: null },
-      { userId: "4", name: "David", xp: 35, coins: 30, position: 4, avatar: null },
-      { userId: "5", name: "Eva", xp: 30, coins: 25, position: 5, avatar: null }
-    ];
-
-    setTest(mockTest);
-    setTimeLeft(mockTest.timeLimit * 60);
-    setPreviousAttempts(mockAttempts);
-    setLeaderboard(mockLeaderboard);
-    setLoading(false);
-  }, [testId]);
+    if (!testId || !isLoaded) return;
+    setLoading(true);
+    fetch(`/api/tests/public/${testId}`)
+      .then(res => res.json())
+      .then(data => {
+        setTest({ ...data.test, questions: data.questions });
+        setTimeLeft(data.test.timeLimit * 60);
+        setPreviousAttempts(data.previousAttempts);
+        setLeaderboard(data.leaderboard);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, [testId, isLoaded]);
 
   // Timer effect
   useEffect(() => {
@@ -156,9 +113,32 @@ export default function TestPage() {
     }
   };
 
-  const handleSubmitTest = () => {
+  const handleSubmitTest = async () => {
     setTestStatus('completed');
-    // Submit logic would go here
+    if (!user || !user.id || !test) return;
+    const answers = Object.entries(selectedAnswers).map(([questionId, selectedOption]) => ({
+      questionId,
+      selectedOption
+    }));
+    const timeSpent = test.timeLimit * 60 - timeLeft;
+    try {
+      const res = await fetch('/api/attempts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: test.creator?._id === user.id ? undefined : user.id, // Don't allow creator to submit
+          testId: test.id || test._id,
+          answers,
+          timeSpent
+        })
+      });
+      const data = await res.json();
+      if (data.attemptId) {
+        router.push(`/results/${data.attemptId}`);
+      }
+    } catch (e) {
+      // Optionally show error
+    }
   };
 
   // Calculate total potential rewards

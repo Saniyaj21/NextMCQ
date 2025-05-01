@@ -1,61 +1,39 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { FiCheckCircle, FiXCircle, FiClock, FiArrowLeft, FiAward, FiTrendingUp } from "react-icons/fi";
 import { GiTwoCoins } from "react-icons/gi";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 export default function ResultsPage() {
-  // Placeholder/mock data
-  const test = {
-    title: "Sample Mathematics Test",
-    totalQuestions: 10,
-  };
-  const attempt = {
-    score: 8,
-    maxScore: 10,
-    percentage: 80,
-    timeSpent: 720, // seconds
-    rewards: { xp: 40, coins: 40 },
-    leaderboardPosition: 3,
-    completedAt: new Date(),
-    questions: [
-      {
-        id: 1,
-        text: "What is the value of x in the equation 2x + 5 = 13?",
-        userAnswer: 1,
-        correctAnswer: 1,
-        options: [
-          { text: "x = 3" },
-          { text: "x = 4" },
-          { text: "x = 5" },
-          { text: "x = 6" },
-        ],
-        explanation: "2x + 5 = 13\n2x = 8\nx = 4",
-      },
-      {
-        id: 2,
-        text: "What is 5 + 7?",
-        userAnswer: 2,
-        correctAnswer: 1,
-        options: [
-          { text: "12" },
-          { text: "13" },
-          { text: "14" },
-          { text: "15" },
-        ],
-        explanation: "5 + 7 = 12",
-      },
-      // ...more questions
-    ],
-  };
+  const { attemptId } = useParams();
+  const [loading, setLoading] = useState(true);
+  const [test, setTest] = useState(null);
+  const [attempt, setAttempt] = useState(null);
+  useEffect(() => {
+    if (!attemptId) return;
+    setLoading(true);
+    fetch(`/api/attempts/${attemptId}`)
+      .then(res => res.json())
+      .then(data => {
+        setTest(data.test);
+        setAttempt(data.attempt);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, [attemptId]);
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     return `${minutes}m ${remainingSeconds}s`;
   };
+
+  if (loading || !test || !attempt) {
+    return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">

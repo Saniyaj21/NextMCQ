@@ -169,7 +169,7 @@ export default function TestOverview({
               <h2 className="text-lg font-semibold text-gray-900 mb-4">Top Performers</h2>
               <div className="grid gap-3">
                 {leaderboard.slice(0, 5).map((entry, index) => (
-                  <div key={entry.userId} className="bg-white rounded-lg border border-gray-100 hover:border-gray-200 transition-colors duration-200">
+                  <div key={index} className="bg-white rounded-lg border border-gray-100 hover:border-gray-200 transition-colors duration-200">
                     <div className="p-2 sm:p-4 flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-purple-100">
