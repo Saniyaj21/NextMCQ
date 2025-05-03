@@ -25,7 +25,9 @@ export default function TestPage() {
   const [previousAttempts, setPreviousAttempts] = useState([]);
   const [leaderboard, setLeaderboard] = useState([]);
   const [rewards, setRewards] = useState({ coins: 0, xp: 0 });
-  const [showReward, setShowReward] = useState(false);
+   const [showReward, setShowReward] = useState(false);
+   const [amount, setAmount] = useState(1);
+
   
   
   
@@ -37,6 +39,12 @@ export default function TestPage() {
     setTimeLeft(data.test.timeLimit * 60);
     setPreviousAttempts(data.previousAttempts);
     setLeaderboard(data.leaderboard);
+    // Set reward amount based on previous attempts
+    if (data.previousAttempts && data.previousAttempts.length > 0) {
+      setAmount(1);
+    } else {
+      setAmount(5);
+    }
     setLoading(false);
   }
 
@@ -45,59 +53,6 @@ export default function TestPage() {
   // Mock test data for UI development
   useEffect(() => {
     fetchTest()
-    // const mockTest = {
-    //   _id: testId,
-    //   title: "Sample Mathematics Test",
-    //   subject: "Mathematics",
-    //   chapter: "Algebra",
-    //   difficulty: "medium",
-    //   timeLimit: 30,
-    //   totalQuestions: 10,
-    //   description: "Test your knowledge of basic algebraic concepts",
-    //   attemptsCount: 156,
-    //   rating: 4.5,
-    //   isPublic: true,
-    //   creator: {
-    //     name: "John Doe",
-    //     _id: "123"
-    //   },
-    //   questions: [
-    //     {
-    //       id: 1,
-    //       text: "What is the value of x in the equation 2x + 5 = 13?",
-    //       image: null,
-    //       options: [
-    //         { text: "x = 3", image: null },
-    //         { text: "x = 4", image: null },
-    //         { text: "x = 5", image: null },
-    //         { text: "x = 6", image: null }
-    //       ],
-    //       correctOption: 1,
-    //       difficulty: "medium",
-    //       explanation: "2x + 5 = 13\n2x = 8\nx = 4"
-    //     }
-    //   ]
-    // };
-
-    // // Mock previous attempts
-    // const mockAttempts = [
-    //   { score: 8, maxScore: 10, timeSpent: 1200, completedAt: new Date() },
-    //   { score: 7, maxScore: 10, timeSpent: 1500, completedAt: new Date(Date.now() - 86400000) }
-    // ];
-
-    // // Updated mock leaderboard with both XP and coins
-    // const mockLeaderboard = [
-    //   { userId: "1", name: "Alice", xp: 50, coins: 45, position: 1, avatar: null },
-    //   { userId: "2", name: "Bob", xp: 45, coins: 40, position: 2, avatar: null },
-    //   { userId: "3", name: "Charlie", xp: 40, coins: 35, position: 3, avatar: null },
-    //   { userId: "4", name: "David", xp: 35, coins: 30, position: 4, avatar: null },
-    //   { userId: "5", name: "Eva", xp: 30, coins: 25, position: 5, avatar: null }
-    // ];
-
-    // // setTest(mockTest);
-    // // setTimeLeft(mockTest.timeLimit * 60);
-    // // setPreviousAttempts(mockAttempts);
-    // // setLeaderboard(mockLeaderboard);
   }, [testId]);
 
   // Timer effect
@@ -151,8 +106,8 @@ export default function TestPage() {
 
     if (isCorrect) {
       setRewards(prev => ({
-        coins: prev.coins + 5,
-        xp: prev.xp + 5
+        coins: prev.coins + amount,
+        xp: prev.xp + amount
       }));
       setShowReward(true);
       setTimeout(() => setShowReward(false), 2000);
@@ -165,15 +120,32 @@ export default function TestPage() {
     }
   };
 
-  const handlePreviousQuestion = () => {
-    if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(prev => prev - 1);
-    }
-  };
-
-  const handleSubmitTest = () => {
+  const handleSubmitTest = async () => {
     setTestStatus('completed');
-    // Submit logic would go here
+    // Prepare answers array for API
+    const answersArr = test.questions.map(q => ({
+      questionId: q.id,
+      selectedOption: selectedAnswers[q.id]
+    }));
+    try {
+      const res = await fetch('/api/attempts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          testId,
+          answers: answersArr,
+          timeSpent: test.timeLimit ? (test.timeLimit * 60 - timeLeft) : undefined
+        })
+      });
+      const data = await res.json();
+      if (data.success && data.attemptId) {
+        router.push(`/results/${data.attemptId}`);
+      } else {
+        alert(data.error || 'Failed to submit test');
+      }
+    } catch (err) {
+      alert('Failed to submit test');
+    }
   };
 
   // Calculate total potential rewards
@@ -245,7 +217,7 @@ export default function TestPage() {
         <div className="fixed top-1/4 left-1/2 transform -translate-x-1/2 z-50 flex flex-col items-center animate-reward-float">
           <div className="flex items-center gap-2 bg-white rounded-lg shadow-lg px-4 py-2 mb-2">
             <GiTwoCoins className="w-6 h-6 text-yellow-500 animate-bounce" />
-            <span className="font-bold text-yellow-700">+5</span>
+            <span className="font-bold text-yellow-700">+{amount}</span>
           </div>
           <div className="flex items-center gap-2 bg-white rounded-lg shadow-lg px-4 py-2">
             <Image
@@ -255,7 +227,7 @@ export default function TestPage() {
               height={24}
               className="opacity-90 animate-bounce"
             />
-            <span className="font-bold text-blue-700">+5</span>
+            <span className="font-bold text-blue-700">+{amount}</span>
           </div>
         </div>
       )}
@@ -263,6 +235,7 @@ export default function TestPage() {
       {/* Main Content */}
       <div className="max-w-4xl mx-auto px-4 py-8">
         <Question
+          amount={amount}
           question={currentQuestion}
           currentIndex={currentQuestionIndex}
           totalQuestions={test.totalQuestions}

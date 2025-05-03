@@ -75,34 +75,33 @@ export async function GET(request, { params }) {
       completedAt: a.completedAt
     }));
 
-    // Fetch leaderboard for this test
-    const leaderboardRaw = await Attempt.aggregate([
-      { $match: { testId: new mongoose.Types.ObjectId(testId) } },
-      {
-        $group: {
-          _id: "$userId",
-          xp: { $sum: "$xpPoints" },      // or use $max for best score
-          coins: { $sum: "$coins" },
-          bestScore: { $max: "$score" }
-        }
-      },
-      { $sort: { xp: -1 } }, // or sort by coins, bestScore, etc.
-      { $limit: 10 }
-    ]);
+    // Fetch all attempts for this test, sorted by score descending
+    const allAttempts = await Attempt.find({ testId: testId })
+      .sort({ score: -1, completedAt: 1 })
+      .populate('userId', 'name profileImage');
 
-    // Fetch user info for leaderboard
-    const userIds = leaderboardRaw.map(entry => entry._id);
-    const users = await User.find({ _id: { $in: userIds } }, "name profileImage");
-    const userMap = {};
-    users.forEach(u => { userMap[u._id.toString()] = u; });
+    // Use a Map to keep only the best attempt per user
+    const bestAttemptsMap = new Map();
+    for (const attempt of allAttempts) {
+      const userIdStr = attempt.userId._id.toString();
+      if (!bestAttemptsMap.has(userIdStr)) {
+        bestAttemptsMap.set(userIdStr, attempt);
+      }
+    }
 
-    const leaderboard = leaderboardRaw.map((entry, idx) => ({
-      userId: entry._id.toString(),
-      name: userMap[entry._id.toString()]?.name || "Unknown",
-      xp: entry.xp,
-      coins: entry.coins,
-      position: idx + 1,
-      avatar: userMap[entry._id.toString()]?.profileImage?.url || null
+    // Take the top 10 unique users
+    const bestAttempts = Array.from(bestAttemptsMap.values()).slice(0, 10);
+
+    const leaderboard = bestAttempts.map((attempt, idx) => ({
+      userId: attempt.userId._id.toString(),
+      name: attempt.userId.name,
+      avatar: attempt.userId.profileImage?.url || null,
+      score: attempt.score,
+      maxScore: attempt.maxScore,
+      xp: attempt.xpPoints,
+      coins: attempt.coins,
+      completedAt: attempt.completedAt,
+      position: idx + 1
     }));
 
     return NextResponse.json({

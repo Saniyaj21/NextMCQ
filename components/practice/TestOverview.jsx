@@ -162,7 +162,7 @@ console.log(leaderboard);
               <h2 className="text-lg font-semibold text-gray-900 mb-4">Top Performers</h2>
               <div className="grid gap-3">
                 {leaderboard.slice(0, 5).map((entry, index) => (
-                  <div key={entry.userId} className="bg-white rounded-lg border border-gray-100 hover:border-gray-200 transition-colors duration-200">
+                  <div key={index} className="bg-white rounded-lg border border-gray-100 hover:border-gray-200 transition-colors duration-200">
                     <div className="p-2 sm:p-4 flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-purple-100">
@@ -194,6 +194,9 @@ console.log(leaderboard);
                             <div className="flex items-center gap-1">
                               <GiTwoCoins className="w-4 h-4 text-yellow-500" />
                               <span className="text-yellow-600">+{entry.coins}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <span className="text-gray-500">{entry.score}/{entry.maxScore}</span>
                             </div>
                           </div>
                         </div>
