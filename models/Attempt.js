@@ -53,6 +53,14 @@ const AttemptSchema = new mongoose.Schema({
     enum: ['easy', 'medium', 'hard'],
     required: true
   },
+  xpPoints: {
+    type: Number,
+    default: 0
+  },
+  coins: {
+    type: Number,
+    default: 0
+  },
   totalQuestions: {
     type: Number,
     required: true

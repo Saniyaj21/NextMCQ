@@ -27,62 +27,77 @@ export default function TestPage() {
   const [rewards, setRewards] = useState({ coins: 0, xp: 0 });
   const [showReward, setShowReward] = useState(false);
   
+  
+  
+  const fetchTest = async () => {
+    const response = await fetch(`/api/tests/practice/${testId}`);
+    const data = await response.json();
+    console.log(data);
+    setTest(data.test);
+    setTimeLeft(data.test.timeLimit * 60);
+    setPreviousAttempts(data.previousAttempts);
+    setLeaderboard(data.leaderboard);
+    setLoading(false);
+  }
+
+
+  
   // Mock test data for UI development
   useEffect(() => {
-    const mockTest = {
-      _id: testId,
-      title: "Sample Mathematics Test",
-      subject: "Mathematics",
-      chapter: "Algebra",
-      difficulty: "medium",
-      timeLimit: 30,
-      totalQuestions: 10,
-      description: "Test your knowledge of basic algebraic concepts",
-      attemptsCount: 156,
-      rating: 4.5,
-      isPublic: true,
-      creator: {
-        name: "John Doe",
-        _id: "123"
-      },
-      questions: [
-        {
-          id: 1,
-          text: "What is the value of x in the equation 2x + 5 = 13?",
-          image: null,
-          options: [
-            { text: "x = 3", image: null },
-            { text: "x = 4", image: null },
-            { text: "x = 5", image: null },
-            { text: "x = 6", image: null }
-          ],
-          correctOption: 1,
-          difficulty: "medium",
-          explanation: "2x + 5 = 13\n2x = 8\nx = 4"
-        }
-      ]
-    };
+    fetchTest()
+    // const mockTest = {
+    //   _id: testId,
+    //   title: "Sample Mathematics Test",
+    //   subject: "Mathematics",
+    //   chapter: "Algebra",
+    //   difficulty: "medium",
+    //   timeLimit: 30,
+    //   totalQuestions: 10,
+    //   description: "Test your knowledge of basic algebraic concepts",
+    //   attemptsCount: 156,
+    //   rating: 4.5,
+    //   isPublic: true,
+    //   creator: {
+    //     name: "John Doe",
+    //     _id: "123"
+    //   },
+    //   questions: [
+    //     {
+    //       id: 1,
+    //       text: "What is the value of x in the equation 2x + 5 = 13?",
+    //       image: null,
+    //       options: [
+    //         { text: "x = 3", image: null },
+    //         { text: "x = 4", image: null },
+    //         { text: "x = 5", image: null },
+    //         { text: "x = 6", image: null }
+    //       ],
+    //       correctOption: 1,
+    //       difficulty: "medium",
+    //       explanation: "2x + 5 = 13\n2x = 8\nx = 4"
+    //     }
+    //   ]
+    // };
 
-    // Mock previous attempts
-    const mockAttempts = [
-      { score: 8, maxScore: 10, timeSpent: 1200, completedAt: new Date() },
-      { score: 7, maxScore: 10, timeSpent: 1500, completedAt: new Date(Date.now() - 86400000) }
-    ];
+    // // Mock previous attempts
+    // const mockAttempts = [
+    //   { score: 8, maxScore: 10, timeSpent: 1200, completedAt: new Date() },
+    //   { score: 7, maxScore: 10, timeSpent: 1500, completedAt: new Date(Date.now() - 86400000) }
+    // ];
 
-    // Updated mock leaderboard with both XP and coins
-    const mockLeaderboard = [
-      { userId: "1", name: "Alice", xp: 50, coins: 45, position: 1, avatar: null },
-      { userId: "2", name: "Bob", xp: 45, coins: 40, position: 2, avatar: null },
-      { userId: "3", name: "Charlie", xp: 40, coins: 35, position: 3, avatar: null },
-      { userId: "4", name: "David", xp: 35, coins: 30, position: 4, avatar: null },
-      { userId: "5", name: "Eva", xp: 30, coins: 25, position: 5, avatar: null }
-    ];
+    // // Updated mock leaderboard with both XP and coins
+    // const mockLeaderboard = [
+    //   { userId: "1", name: "Alice", xp: 50, coins: 45, position: 1, avatar: null },
+    //   { userId: "2", name: "Bob", xp: 45, coins: 40, position: 2, avatar: null },
+    //   { userId: "3", name: "Charlie", xp: 40, coins: 35, position: 3, avatar: null },
+    //   { userId: "4", name: "David", xp: 35, coins: 30, position: 4, avatar: null },
+    //   { userId: "5", name: "Eva", xp: 30, coins: 25, position: 5, avatar: null }
+    // ];
 
-    setTest(mockTest);
-    setTimeLeft(mockTest.timeLimit * 60);
-    setPreviousAttempts(mockAttempts);
-    setLeaderboard(mockLeaderboard);
-    setLoading(false);
+    // // setTest(mockTest);
+    // // setTimeLeft(mockTest.timeLimit * 60);
+    // // setPreviousAttempts(mockAttempts);
+    // // setLeaderboard(mockLeaderboard);
   }, [testId]);
 
   // Timer effect

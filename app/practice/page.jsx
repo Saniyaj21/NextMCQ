@@ -178,24 +178,6 @@ export default function PracticePage() {
                       </p>
                     )}
                   </div>
-
-                  {/* Difficulty Badge - Color coded by level - Now positioned at right */}
-                  {test.difficulty === 'hard' ? (
-                    <span className="flex items-center gap-1.5 text-red-600 ml-4">
-                      <FiStar className="w-4 h-4" />
-                      <span className="text-xs font-medium">Hard</span>
-                    </span>
-                  ) : test.difficulty === 'medium' ? (
-                    <span className="flex items-center gap-1.5 text-yellow-600 ml-4">
-                      <FiStar className="w-4 h-4" />
-                      <span className="text-xs font-medium">Medium</span>
-                    </span>
-                  ) : (
-                    <span className="flex items-center gap-1.5 text-green-600 ml-4">
-                      <FiStar className="w-4 h-4" />
-                      <span className="text-xs font-medium">Easy</span>
-                    </span>
-                  )}
                 </div>
               </div>
 

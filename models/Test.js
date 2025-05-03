@@ -19,6 +19,11 @@ const TestSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
+  difficulty: {
+    type: String,
+    enum: ['easy', 'medium', 'hard'],
+    default: 'easy'
+  },
   creator: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
