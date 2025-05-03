@@ -12,7 +12,8 @@ export default function Question({
   onVerify,
   onNext,
   onSubmit,
-  isLastQuestion
+  isLastQuestion,
+  amount
 }) {
   const hasSelectedAnswer = selectedAnswer !== undefined;
 
@@ -116,7 +117,7 @@ export default function Question({
                     <h3 className="font-medium text-green-800">Correct!</h3>
                     <div className="flex items-center gap-1 px-2 py-0.5 bg-yellow-100 rounded text-sm">
                       <GiTwoCoins className="w-4 h-4 text-yellow-500" />
-                      <span className="font-medium text-yellow-700">+5</span>
+                      <span className="font-medium text-yellow-700">+{amount}</span>
                     </div>
                     <div className="flex items-center gap-1 px-2 py-0.5 bg-blue-100 rounded text-sm">
                       <Image
@@ -126,7 +127,7 @@ export default function Question({
                         height={16}
                         className="opacity-90"
                       />
-                      <span className="font-medium text-blue-700">+5</span>
+                      <span className="font-medium text-blue-700">+{amount}</span>
                     </div>
                   </div>
                   <p className="text-gray-700 whitespace-pre-wrap">{question.explanation}</p>
