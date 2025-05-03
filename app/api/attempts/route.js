@@ -87,6 +87,9 @@ export async function POST(request) {
         totalQuestions: maxScore
     });
 
+    // Increment the attemptsCount for the test
+    await Test.findByIdAndUpdate(testId, { $inc: { attemptsCount: 1 } });
+
     // Return attempt summary to client
     return NextResponse.json({
         success: true,

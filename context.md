@@ -17,6 +17,10 @@
   }
   ```
 
+## [2024-06-09] Feature Update: Test Attempt Count
+- The `attemptsCount` field in the Test model is now incremented by 1 each time a test is attempted.
+- This is handled in the `/api/attempts/route.js` POST handler, immediately after a new Attempt is created.
+
 ## Recent Changes
 
 ### 2024-06-09

@@ -191,9 +191,13 @@ export default function PracticePage() {
                   <div className="text-sm font-semibold text-gray-900">{test.questionCount|| 0}</div>
                   <div className="text-xs text-gray-500">Questions</div>
                 </div>
-                <div className="text-center">
-                  <div className="text-sm font-semibold text-gray-900">4.5</div>
+                {/* <div className="text-center">
+                  <div className="text-sm font-semibold text-gray-900">{test?.rating}</div>
                   <div className="text-xs text-gray-500">Rating</div>
+                </div> */}
+                <div className="text-center">
+                  <div className="text-sm font-semibold text-gray-900">{test?.attemptsCount || 0}</div>
+                  <div className="text-xs text-gray-500">Attempts</div>
                 </div>
               </div>
 

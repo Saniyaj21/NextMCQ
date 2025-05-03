@@ -10,7 +10,7 @@ export async function GET() {
 
     // First get all public tests
     const tests = await Test.find({ isPublic: true })
-      .select('title subject description timeLimit chapter createdAt creator')
+      .select('title subject description timeLimit chapter createdAt creator rating attemptsCount')
       .populate({
         path: 'creator',
         model: User,

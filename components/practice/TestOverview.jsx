@@ -12,15 +12,15 @@ export default function TestOverview({
   formatTime
 }) {
 
-console.log(leaderboard);
+  console.log(leaderboard);
 
 
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 sm:p-8">
       <div className="max-w-4xl mx-auto">
-        <Link 
-          href="/practice" 
+        <Link
+          href="/practice"
           className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 mb-4 sm:mb-6"
         >
           <FiArrowLeft />
@@ -44,6 +44,14 @@ console.log(leaderboard);
                   </span>
                 </div>
               </div>
+            </div>
+            <div className="border-t flex justify-center border-gray-200 py-6">
+              <button
+                onClick={onStartTest}
+                className="w-full md:w-auto px-10 py-2 border border-blue-600 text-blue-600 rounded-lg transition-colors"
+              >
+                Start Test
+              </button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -97,39 +105,35 @@ console.log(leaderboard);
                     <div key={index} className="bg-white rounded-lg border border-gray-100 hover:border-gray-200 transition-colors duration-200">
                       <div className="relative">
                         {/* Score Progress Bar */}
-                        <div 
-                          className={`absolute top-0 left-0 h-full ${
-                            scorePercentage >= 70 ? 'bg-green-50' :
+                        <div
+                          className={`absolute top-0 left-0 h-full ${scorePercentage >= 70 ? 'bg-green-50' :
                             scorePercentage >= 50 ? 'bg-yellow-50' :
-                            'bg-red-50'
-                          } transition-all duration-300`}
+                              'bg-red-50'
+                            } transition-all duration-300`}
                           style={{ width: `${scorePercentage}%` }}
                         />
-                        
+
                         {/* Content */}
                         <div className="relative p-2 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
                           <div className="flex items-center gap-3">
-                            <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
-                              scorePercentage >= 70 ? 'bg-green-100' :
+                            <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${scorePercentage >= 70 ? 'bg-green-100' :
                               scorePercentage >= 50 ? 'bg-yellow-100' :
-                              'bg-red-100'
-                            }`}>
-                              <FiStar className={`w-5 h-5 ${
-                                scorePercentage >= 70 ? 'text-green-600' :
+                                'bg-red-100'
+                              }`}>
+                              <FiStar className={`w-5 h-5 ${scorePercentage >= 70 ? 'text-green-600' :
                                 scorePercentage >= 50 ? 'text-yellow-600' :
-                                'text-red-600'
-                              }`} />
+                                  'text-red-600'
+                                }`} />
                             </div>
                             <div>
                               <div className="flex items-baseline gap-2">
                                 <span className="font-semibold text-gray-900">
                                   {attempt.score}/{attempt.maxScore}
                                 </span>
-                                <span className={`text-sm ${
-                                  scorePercentage >= 70 ? 'text-green-600' :
+                                <span className={`text-sm ${scorePercentage >= 70 ? 'text-green-600' :
                                   scorePercentage >= 50 ? 'text-yellow-600' :
-                                  'text-red-600'
-                                }`}>
+                                    'text-red-600'
+                                  }`}>
                                   {scorePercentage.toFixed(0)}%
                                 </span>
                               </div>
@@ -201,12 +205,11 @@ console.log(leaderboard);
                           </div>
                         </div>
                       </div>
-                      <div className={`flex items-center justify-center w-8 h-8 rounded-full ${
-                        index === 0 ? 'bg-yellow-100 text-yellow-600' :
+                      <div className={`flex items-center justify-center w-8 h-8 rounded-full ${index === 0 ? 'bg-yellow-100 text-yellow-600' :
                         index === 1 ? 'bg-gray-100 text-gray-600' :
-                        index === 2 ? 'bg-amber-100 text-amber-600' :
-                        'bg-blue-50 text-blue-600'
-                      } font-semibold text-sm`}>
+                          index === 2 ? 'bg-amber-100 text-amber-600' :
+                            'bg-blue-50 text-blue-600'
+                        } font-semibold text-sm`}>
                         #{entry.position}
                       </div>
                     </div>
@@ -216,14 +219,7 @@ console.log(leaderboard);
             </div>
           )}
 
-          <div className="border-t border-gray-200 pt-6">
-            <button
-              onClick={onStartTest}
-              className="w-full md:w-auto px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              Start Test
-            </button>
-          </div>
+          
         </div>
       </div>
     </div>
