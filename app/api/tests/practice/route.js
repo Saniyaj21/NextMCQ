@@ -38,15 +38,9 @@ export async function GET() {
       questionCounts.map(item => [item._id.toString(), item.questionCount])
     );
 
-    // Filter tests to only include those with at least 5 questions
-    const filteredTests = tests.filter(test => {
-      const count = questionCountMap.get(test._id.toString()) || 0;
-      return count >= 5;
-    });
-
     return NextResponse.json({
       success: true,
-      tests: filteredTests.map(test => ({
+      tests: tests.map(test => ({
         ...test.toObject(),
         creatorName: test.creator?.name || 'Unknown',
         questionCount: questionCountMap.get(test._id.toString()) || 0

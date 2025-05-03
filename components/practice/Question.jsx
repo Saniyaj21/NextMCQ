@@ -25,13 +25,6 @@ export default function Question({
             Question {currentIndex + 1} of {totalQuestions}
           </h2>
           <div className="flex items-center gap-2 mt-1">
-            <span className={`px-2 py-0.5 rounded text-sm font-medium ${
-              question.difficulty === 'hard' ? 'bg-red-100 text-red-700' :
-              question.difficulty === 'medium' ? 'bg-yellow-100 text-yellow-700' :
-              'bg-green-100 text-green-700'
-            }`}>
-              {question.difficulty.charAt(0).toUpperCase() + question.difficulty.slice(1)}
-            </span>
             {!verification && (
               <span className="text-sm text-gray-500">
                 • Answer correctly to earn 5 coins and XP
@@ -45,7 +38,7 @@ export default function Question({
       <div className="mb-6">
         <div className="text-gray-900 text-lg mb-6">
           {question.text}
-          {question.image && (
+          {question.image && question.image.url && (
             <img
               src={question.image.url}
               alt="Question"
@@ -95,7 +88,7 @@ export default function Question({
                 </div>
                 <div className="flex-1">
                   <span className="text-gray-900">{option.text}</span>
-                  {option.image && (
+                  {option.image && option.image.url && (
                     <img
                       src={option.image.url}
                       alt={`Option ${index + 1}`}

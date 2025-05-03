@@ -11,6 +11,11 @@ export default function TestOverview({
   onStartTest,
   formatTime
 }) {
+
+console.log(leaderboard);
+
+
+
   return (
     <div className="min-h-screen bg-gray-50 p-4 sm:p-8">
       <div className="max-w-4xl mx-auto">
@@ -37,18 +42,6 @@ export default function TestOverview({
                     <FiStar className="w-4 h-4 text-yellow-400" />
                     {test.rating.toFixed(1)}
                   </span>
-                  <div className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${
-                    test.difficulty === 'hard' ? 'bg-red-100 text-red-700 border border-red-200' :
-                    test.difficulty === 'medium' ? 'bg-yellow-100 text-yellow-700 border border-yellow-200' :
-                    'bg-green-100 text-green-700 border border-green-200'
-                  }`}>
-                    <span className={`w-1.5 h-1.5 rounded-full mr-1.5 ${
-                      test.difficulty === 'hard' ? 'bg-red-400' :
-                      test.difficulty === 'medium' ? 'bg-yellow-400' :
-                      'bg-green-400'
-                    }`} />
-                    {test.difficulty.charAt(0).toUpperCase() + test.difficulty.slice(1)}
-                  </div>
                 </div>
               </div>
             </div>

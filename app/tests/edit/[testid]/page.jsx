@@ -223,17 +223,6 @@ export default function EditTestPage() {
                     )}
                   </div>
                 </div>
-                <div className="flex items-center gap-4 text-sm">
-                  <span className={`px-2 py-1 rounded-lg ${
-                    question.difficulty === 'easy'
-                      ? 'bg-green-50 text-green-600'
-                      : question.difficulty === 'medium'
-                      ? 'bg-yellow-50 text-yellow-600'
-                      : 'bg-red-50 text-red-600'
-                  }`}>
-                    {question.difficulty.charAt(0).toUpperCase() + question.difficulty.slice(1)}
-                  </span>
-                </div>
               </div>
             ))}
           </div>
