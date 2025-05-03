@@ -1,55 +1,30 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { FiCheckCircle, FiXCircle, FiClock, FiArrowLeft, FiAward, FiTrendingUp } from "react-icons/fi";
 import { GiTwoCoins } from "react-icons/gi";
 import Image from "next/image";
 
 export default function ResultsPage() {
-  // Placeholder/mock data
-  const test = {
-    title: "Sample Mathematics Test",
-    totalQuestions: 10,
-  };
-  const attempt = {
-    score: 8,
-    maxScore: 10,
-    percentage: 80,
-    timeSpent: 720, // seconds
-    rewards: { xp: 40, coins: 40 },
-    leaderboardPosition: 3,
-    completedAt: new Date(),
-    questions: [
-      {
-        id: 1,
-        text: "What is the value of x in the equation 2x + 5 = 13?",
-        userAnswer: 1,
-        correctAnswer: 1,
-        options: [
-          { text: "x = 3" },
-          { text: "x = 4" },
-          { text: "x = 5" },
-          { text: "x = 6" },
-        ],
-        explanation: "2x + 5 = 13\n2x = 8\nx = 4",
-      },
-      {
-        id: 2,
-        text: "What is 5 + 7?",
-        userAnswer: 2,
-        correctAnswer: 1,
-        options: [
-          { text: "12" },
-          { text: "13" },
-          { text: "14" },
-          { text: "15" },
-        ],
-        explanation: "5 + 7 = 12",
-      },
-      // ...more questions
-    ],
-  };
+  const { attemptId } = useParams();
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (!attemptId) return;
+    setLoading(true);
+    fetch(`/api/attempts/${attemptId}`)
+      .then(async (res) => {
+        if (!res.ok) throw new Error((await res.json()).error || "Failed to fetch result");
+        return res.json();
+      })
+      .then(setData)
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
+  }, [attemptId]);
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -57,18 +32,36 @@ export default function ResultsPage() {
     return `${minutes}m ${remainingSeconds}s`;
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-lg text-gray-600">Loading results...</div>
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-lg text-red-600">{error}</div>
+      </div>
+    );
+  }
+  if (!data) return null;
+
+  const { test, attempt } = data;
+
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="container mx-auto px-4 max-w-3xl">
         <div className="mb-6 flex items-center gap-2">
-          <Link href="/dashboard" className="text-blue-600 hover:text-blue-700 flex items-center gap-2">
-            <FiArrowLeft /> Back to Dashboard
+          <Link href="/practice" className="text-blue-600 hover:text-blue-700 flex items-center gap-2">
+            <FiArrowLeft /> Back to Practice
           </Link>
         </div>
 
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
           <h1 className="text-2xl font-bold mb-2">Test Results</h1>
-          <p className="text-gray-600 mb-4">{test.title}</p>
+          <p className="text-blue-600 mb-4">{test.title}</p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
             <div className="flex items-center gap-3 p-4 bg-blue-50 rounded-lg">
@@ -76,7 +69,7 @@ export default function ResultsPage() {
               <div>
                 <p className="text-sm text-gray-600">Score</p>
                 <p className="font-semibold text-gray-900 text-lg">
-                  {attempt.score}/{attempt.maxScore} ({attempt.percentage}%)
+                  {attempt.score}/{attempt.maxScore} ({Number(attempt.percentage).toFixed(2)}%)
                 </p>
               </div>
             </div>
@@ -85,10 +78,13 @@ export default function ResultsPage() {
               <div>
                 <p className="text-sm text-gray-600">Rewards</p>
                 <div className="flex items-center gap-3">
-                  <span className="font-semibold text-yellow-700">+{attempt.rewards.coins} coins</span>
+                  <span className="font-semibold text-yellow-700 flex items-center gap-1">
+                    <GiTwoCoins className="w-5 h-5 text-yellow-500" />
+                    {attempt.rewards.coins}
+                  </span>
                   <span className="font-semibold text-blue-700 flex items-center gap-1">
-                    +{attempt.rewards.xp}
-                    <Image src="/icons/xpicon.png" alt="XP" width={16} height={16} className="inline-block opacity-90" /> XP
+                    <Image src="/icons/xpicon.png" alt="XP" width={16} height={16} className="inline-block opacity-90" />
+                    {attempt.rewards.xp}
                   </span>
                 </div>
               </div>
@@ -98,13 +94,6 @@ export default function ResultsPage() {
               <div>
                 <p className="text-sm text-gray-600">Time Spent</p>
                 <p className="font-semibold text-gray-900">{formatTime(attempt.timeSpent)}</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 p-4 bg-purple-50 rounded-lg">
-              <FiTrendingUp className="w-6 h-6 text-purple-600" />
-              <div>
-                <p className="text-sm text-gray-600">Leaderboard Position</p>
-                <p className="font-semibold text-purple-700">#{attempt.leaderboardPosition}</p>
               </div>
             </div>
           </div>

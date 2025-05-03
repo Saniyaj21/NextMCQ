@@ -48,7 +48,7 @@ export default function TestOverview({
             <div className="border-t flex justify-center border-gray-200 py-6">
               <button
                 onClick={onStartTest}
-                className="w-full md:w-auto px-10 py-2 border border-blue-600 text-blue-600 rounded-lg transition-colors"
+                className="w-full md:w-auto px-10 py-2 border border-blue-600 bg-blue-100 cursor-pointer text-blue-600 rounded-lg transition-colors"
               >
                 Start Test
               </button>
