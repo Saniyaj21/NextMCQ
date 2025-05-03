@@ -21,6 +21,14 @@
 - The `attemptsCount` field in the Test model is now incremented by 1 each time a test is attempted.
 - This is handled in the `/api/attempts/route.js` POST handler, immediately after a new Attempt is created.
 
+## [2024-06-09] New API: Get Attempt Result
+- Added GET `/api/attempts/[attemptId]` endpoint.
+- Returns all data needed for the result page UI:
+  - Test info: title, totalQuestions
+  - Attempt details: score, maxScore, percentage, timeSpent, rewards (xp, coins), completedAt, leaderboardPosition (placeholder)
+  - Question review: for each question, includes text, userAnswer, correctAnswer, options, and explanation
+- Only the authenticated user who owns the attempt can access it.
+
 ## Recent Changes
 
 ### 2024-06-09
