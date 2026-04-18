@@ -1,2 +1,92 @@
 @import "tailwindcss";
 
+html { scroll-behavior: smooth; }
+body { -webkit-font-smoothing: antialiased; }
+
+/* ── Float ─────────────────────────────────────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+@keyframes float2 {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-7px); }
+}
+
+/* ── Entrance ───────────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes stepIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Animated gradient text ─────────────────────────────────────── */
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
+}
+.gradient-text {
+  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 35%, #93c5fd 65%, #60a5fa 100%);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShift 5s ease infinite;
+}
+
+/* ── Shimmer ────────────────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+.shimmer {
+  background: linear-gradient(90deg, transparent 0%, rgba(29,78,216,0.10) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 2.5s linear infinite;
+}
+
+/* ── Pulse ring (onboarding) ────────────────────────────────────── */
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(79,70,229,0.35); }
+  70%  { box-shadow: 0 0 0 12px rgba(79,70,229,0); }
+  100% { box-shadow: 0 0 0 0 rgba(79,70,229,0); }
+}
+
+/* ── Animation utilities ────────────────────────────────────────── */
+.float-1  { animation: float  3.5s ease-in-out infinite; }
+.float-2  { animation: float2 4s   ease-in-out infinite 1s; }
+.step-in  { animation: stepIn 0.3s ease-out forwards; }
+
+/* ── Hero staggered entry (runs on page load, no JS needed) ─────── */
+.hero-badge { opacity: 0; animation: fadeUp 0.6s ease-out 0.2s  forwards; }
+.hero-title { opacity: 0; animation: fadeUp 0.7s ease-out 0.35s forwards; }
+.hero-desc  { opacity: 0; animation: fadeUp 0.6s ease-out 0.52s forwards; }
+.hero-cta   { opacity: 0; animation: fadeUp 0.6s ease-out 0.65s forwards; }
+.hero-phone { opacity: 0; animation: fadeUp 0.8s ease-out 0.42s forwards; }
+
+/* ── OTP input ──────────────────────────────────────────────────── */
+.otp-box {
+  width: 3rem; height: 3.5rem;
+  text-align: center; font-size: 1.375rem; font-weight: 700;
+  border: 2px solid #e5e7eb; border-radius: 0.75rem;
+  outline: none; transition: border-color 0.15s, background 0.15s;
+  background: #fff; color: #111827;
+}
+.otp-box:focus  { border-color: #4f46e5; background: #eef2ff; }
+.otp-box.filled { border-color: #6366f1; background: #eef2ff; color: #4f46e5; }
+
+/* ── Play Store button ──────────────────────────────────────────── */
+.ps-btn {
+  display: inline-flex; align-items: center; gap: 0.625rem;
+  padding: 0.75rem 1.375rem; border-radius: 0.875rem;
+  font-weight: 600; transition: transform 0.2s, box-shadow 0.2s;
+  text-decoration: none; cursor: pointer;
+}
+.ps-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.18); }
