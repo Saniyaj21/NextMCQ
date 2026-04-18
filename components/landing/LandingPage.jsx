@@ -312,12 +312,12 @@ function FeatureSection({ labelIcon, label, title, desc, reverse = false }) {
         <p className="text-gray-500 text-base leading-relaxed lg:max-w-sm">{desc}</p>
       </div>
 
-      <div className="relative rounded-2xl border border-gray-200 shadow-lg py-12 px-10 shrink-0 overflow-hidden bg-white">
+      <div className="relative rounded-2xl border border-gray-200 shadow-lg py-10 px-6 sm:py-12 sm:px-10 w-full lg:w-auto lg:shrink-0 overflow-hidden bg-white">
         <div className="pointer-events-none absolute inset-0"
           style={{ background: 'radial-gradient(ellipse at 50% 100%, rgba(99,102,241,0.07), transparent 65%)' }} />
         <div className="relative flex justify-center items-end gap-5">
           <PhoneFrame offset={20} />
-          <PhoneFrame />
+          <div className="hidden sm:block"><PhoneFrame /></div>
         </div>
       </div>
     </div>
@@ -454,24 +454,22 @@ function DownloadCTA() {
 ────────────────────────────────────────────────────────────────── */
 function Footer() {
   return (
-    <footer className="bg-white border-t border-gray-100 py-16">
+    <footer className="bg-[#030712] py-16" style={DOT_DARK}>
       <div className="max-w-5xl mx-auto px-6 flex flex-col items-center text-center">
-        {/* Big centered logo */}
-        <div className="w-24 h-24 rounded-3xl overflow-hidden bg-white ring-1 ring-black/[0.06] shadow-md mb-4">
+        <div className="w-24 h-24 rounded-3xl overflow-hidden bg-white shadow-md mb-4">
           <Image src="/nextmcq-logo.png" alt="NextMCQ" width={96} height={96} className="w-full h-full object-contain" />
         </div>
-        <p className="text-gray-400 text-sm max-w-xs leading-relaxed mb-8">
+        <p className="text-gray-500 text-sm max-w-xs leading-relaxed mb-8">
           MCQ practice for Indian students — Class 10, 11 &amp; 12.
         </p>
 
-        {/* Links */}
         <div className="flex flex-wrap justify-center gap-6 text-sm mb-10">
           {['Privacy Policy', 'Terms of Use', 'Contact'].map(l => (
-            <a key={l} href="#" className="text-gray-400 hover:text-gray-700 transition-colors">{l}</a>
+            <a key={l} href="#" className="text-gray-500 hover:text-gray-300 transition-colors">{l}</a>
           ))}
         </div>
 
-        <p className="text-gray-300 text-xs">© {new Date().getFullYear()} NextMCQ. Built for Indian students.</p>
+        <p className="text-gray-600 text-xs">© {new Date().getFullYear()} NextMCQ. Built for Indian students.</p>
       </div>
     </footer>
   );
@@ -482,15 +480,14 @@ function Footer() {
 ────────────────────────────────────────────────────────────────── */
 export default function LandingPage() {
   return (
-    <>
+    <div className="w-full overflow-x-hidden">
       <Navbar />
       <Hero />
       <TrustBar />
       <Features />
       <HowItWorks />
-
       <DownloadCTA />
       <Footer />
-    </>
+    </div>
   );
 }
