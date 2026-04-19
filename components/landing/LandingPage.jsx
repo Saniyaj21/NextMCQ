@@ -500,7 +500,7 @@ function Footer() {
         <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent mb-8" />
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-gray-600 text-xs">
-            © {new Date().getFullYear()} NextMCQ. Built with ❤️ for Indian students.
+            © {new Date().getFullYear()} NextMCQ. Built with ❤️ for West Bengal students.
           </p>
           <div className="flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />

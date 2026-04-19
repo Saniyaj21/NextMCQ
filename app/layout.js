@@ -14,6 +14,15 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "NextMCQ — Practice Smarter, Score Higher",
   description: "MCQ practice app for Class 10, 11 & 12 students. Battle friends, climb leaderboards, and earn rewards.",
+  icons: {
+    icon: [
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon.ico" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png" }],
+    other: [{ rel: "manifest", url: "/site.webmanifest" }],
+  },
   openGraph: {
     title: "NextMCQ",
     description: "Free MCQ practice app for Class 10, 11 & 12.",

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
+import Image from 'next/image';
 import { api } from '@/lib/api';
 import {
   BookOpen, Swords, Trophy, Coins,
@@ -11,6 +12,11 @@ import { FaGooglePlay } from 'react-icons/fa';
 
 const PS_URL = 'https://play.google.com/store/apps/details?id=com.nextmcq.app';
 
+const DOT_DARK = {
+  backgroundImage: 'radial-gradient(rgba(29,78,216,0.15) 1px, transparent 1px)',
+  backgroundSize: '24px 24px',
+};
+
 /* ── Left Panel Phone ──────────────────────────────────────────── */
 function LeftPanelPhone() {
   return (
@@ -18,65 +24,10 @@ function LeftPanelPhone() {
       <div className="absolute -left-[3px] top-[48px] w-[3px] h-[18px] bg-indigo-800 rounded-l-sm" />
       <div className="absolute -left-[3px] top-[76px] w-[3px] h-[18px] bg-indigo-800 rounded-l-sm" />
       <div className="absolute -right-[3px] top-[58px] w-[3px] h-[28px] bg-indigo-800 rounded-r-sm" />
-      <div className="bg-indigo-950 rounded-[1.9rem] p-[5px] shadow-xl shadow-black/40 ring-1 ring-indigo-900">
-        <div className="rounded-[1.5rem] overflow-hidden bg-white" style={{ aspectRatio: '9/19.5' }}>
-          <div className="h-[14px] bg-indigo-950 flex justify-center items-end pb-1">
-            <div className="w-10 h-[8px] bg-indigo-900 rounded-b-[7px]" />
-          </div>
-          <div className="flex flex-col gap-1.5 px-2 pt-1.5 pb-2 bg-white h-full">
-            <div className="flex justify-between items-center">
-              <div>
-                <p className="text-[6px] text-gray-400">Good morning 👋</p>
-                <p className="text-[9px] font-semibold text-gray-900">Saniya</p>
-              </div>
-              <div className="w-5 h-5 rounded-full bg-indigo-100 grid place-items-center">
-                <span className="text-[7px] font-bold text-indigo-600">S</span>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-1">
-              {[{ v: '1,250', l: 'Coins', c: 'text-amber-500', i: '🪙' }, { v: '#7', l: 'Rank', c: 'text-purple-500', i: '🏆' }].map(s => (
-                <div key={s.l} className="bg-gray-50 border border-gray-100 rounded-md p-1 text-center">
-                  <p className={`${s.c} font-semibold text-[8px]`}>{s.i} {s.v}</p>
-                  <p className="text-gray-400 text-[6px]">{s.l}</p>
-                </div>
-              ))}
-            </div>
-            <div className="bg-gradient-to-r from-orange-500 to-red-500 rounded-md p-1.5 flex items-center gap-1">
-              <span className="text-[10px]">⚔️</span>
-              <div className="flex-1 min-w-0">
-                <p className="text-white font-semibold text-[7px] leading-none">Battle Mode</p>
-                <p className="text-orange-100 text-[6px] mt-0.5">Aryan challenged you!</p>
-              </div>
-              <div className="bg-white/25 rounded px-1 py-0.5">
-                <p className="text-white text-[6px] font-bold">Accept</p>
-              </div>
-            </div>
-            {[
-              { i: '📚', t: 'Physics — Ch.4', s: '250 MCQs', bg: 'bg-blue-50 border-blue-100', c: 'text-blue-500' },
-              { i: '🧪', t: 'Chemistry', s: 'Score: 82%', bg: 'bg-emerald-50 border-emerald-100', c: 'text-emerald-500' },
-            ].map(c => (
-              <div key={c.t} className={`${c.bg} border rounded-md p-1 flex items-center gap-1`}>
-                <span className="text-[10px] shrink-0">{c.i}</span>
-                <div>
-                  <p className="text-gray-800 font-medium text-[7px] leading-none">{c.t}</p>
-                  <p className={`${c.c} text-[6px] mt-0.5`}>{c.s}</p>
-                </div>
-              </div>
-            ))}
-            <div className="bg-amber-50 border border-amber-100 rounded-md p-1">
-              <p className="text-amber-700 font-medium text-[7px]">🔥 Day 7 streak!</p>
-              <div className="flex gap-0.5 mt-0.5">
-                {Array.from({ length: 7 }, (_, i) => (
-                  <div key={i} className="flex-1 h-0.5 rounded-full bg-amber-400" />
-                ))}
-              </div>
-            </div>
-            <div className="mt-auto flex justify-around border-t border-gray-100 pt-1">
-              {['🏠', '⚔️', '🏆', '👤'].map((ic, i) => (
-                <div key={i} className={`text-[11px] ${i === 0 ? 'opacity-100' : 'opacity-25'}`}>{ic}</div>
-              ))}
-            </div>
-          </div>
+      <div className="bg-gray-800 rounded-[1.9rem] p-[6px] shadow-xl shadow-black/40"
+        style={{ boxShadow: '0 40px 80px -12px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.07)' }}>
+        <div className="relative rounded-[1.5rem] overflow-hidden" style={{ aspectRatio: '9/19.5' }}>
+          <img src="/unnamed.webp" alt="NextMCQ app" className="absolute inset-0 w-full h-full object-cover object-top" />
         </div>
       </div>
     </div>
@@ -86,20 +37,11 @@ function LeftPanelPhone() {
 /* ── Left Panel ────────────────────────────────────────────────── */
 function LeftPanel() {
   return (
-    <div className="hidden lg:flex lg:w-[44%] bg-[#0f0e17] flex-col justify-between p-12 relative overflow-hidden">
+    <div className="hidden lg:flex lg:w-[44%] bg-[#030712] flex-col justify-between p-12 relative overflow-hidden" style={DOT_DARK}>
       <div className="absolute inset-0 pointer-events-none opacity-[0.07]"
         style={{ backgroundImage: 'radial-gradient(#a5b4fc 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full pointer-events-none"
         style={{ background: 'radial-gradient(circle, rgba(99,102,241,0.18) 0%, transparent 70%)' }} />
-
-      {/* Logo */}
-      <div className="flex items-center gap-2.5 relative z-10">
-        <div className="w-9 h-9 rounded-xl grid place-items-center shadow-sm"
-          style={{ background: 'linear-gradient(135deg, #6366f1 0%, #7c3aed 100%)' }}>
-          <span className="text-white font-bold text-base">N</span>
-        </div>
-        <span className="text-white font-semibold text-lg">NextMCQ</span>
-      </div>
 
       {/* Phone mockup */}
       <div className="relative z-10 flex justify-center">
@@ -190,10 +132,10 @@ function ProgressBar({ step }) {
   return (
     <div className="mb-8">
       <div className="flex justify-between items-center mb-2.5">
-        <p className="text-xs text-gray-500 font-medium">{labels[step] || ''}</p>
-        <p className="text-xs text-gray-400">{STEPS.indexOf(step) + 1} of 3</p>
+        <p className="text-xs text-gray-400 font-medium">{labels[step] || ''}</p>
+        <p className="text-xs text-gray-500">{STEPS.indexOf(step) + 1} of 3</p>
       </div>
-      <div className="h-1 bg-gray-100 rounded-full overflow-hidden">
+      <div className="h-1 bg-white/10 rounded-full overflow-hidden">
         <div className="h-full rounded-full transition-all duration-500"
           style={{ width: `${pct}%`, background: 'linear-gradient(90deg, #6366f1 0%, #7c3aed 100%)' }} />
       </div>
@@ -225,7 +167,7 @@ function PrimaryBtn({ onClick, disabled, loading, children }) {
 /* ── Back Button ───────────────────────────────────────────────── */
 function BackBtn({ onClick }) {
   return (
-    <button onClick={onClick} className="flex items-center gap-1.5 text-gray-400 hover:text-gray-700 text-sm font-medium mb-7 transition-colors">
+    <button onClick={onClick} className="flex items-center gap-1.5 text-gray-500 hover:text-white text-sm font-medium mb-7 transition-colors">
       <ChevronLeft className="w-4 h-4" />
       Back
     </button>
@@ -236,7 +178,7 @@ function BackBtn({ onClick }) {
 function ErrBox({ msg }) {
   if (!msg) return null;
   return (
-    <div className="bg-red-50 border border-red-200 text-red-600 text-sm rounded-xl px-4 py-3 mb-4">{msg}</div>
+    <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm rounded-xl px-4 py-3 mb-4">{msg}</div>
   );
 }
 
@@ -245,7 +187,7 @@ function Field({ label, badge, children }) {
   return (
     <div className="mb-5">
       <div className="flex items-center gap-2 mb-2">
-        <label className="text-sm font-medium text-gray-700">{label}</label>
+        <label className="text-sm font-medium text-gray-300">{label}</label>
         {badge}
       </div>
       {children}
@@ -257,33 +199,44 @@ function Field({ label, badge, children }) {
 function WelcomeStep({ code, onNext }) {
   return (
     <div className="step-in">
-      <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6"
-        style={{ background: 'linear-gradient(135deg, #eef2ff 0%, #ede9fe 100%)' }}>
-        <Sparkles className="w-8 h-8 text-indigo-500" />
+
+      {/* Play Store style app header */}
+      <div className="flex items-center gap-4 mb-7 p-4 rounded-2xl border border-white/10 bg-white/5">
+        <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-md ring-1 ring-white/10 shrink-0 bg-white">
+          <Image src="/nextmcq-logo.png" alt="NextMCQ" width={64} height={64} className="w-full h-full object-contain" />
+        </div>
+        <div className="min-w-0">
+          <p className="text-lg font-bold text-white leading-tight">NextMCQ</p>
+          <p className="text-sm text-gray-400 mt-0.5">MCQ Practice for Boards & School</p>
+          <div className="flex items-center gap-2 mt-1.5">
+            <span className="text-[11px] font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">Free</span>
+            <span className="text-[11px] text-gray-500">Class 10 · 11 · 12</span>
+          </div>
+        </div>
       </div>
 
-      <h1 className="text-2xl font-semibold text-gray-900 mb-2 text-center">You've been invited!</h1>
+      <h1 className="text-2xl font-semibold text-white mb-2 text-center">You've been invited!</h1>
       <p className="text-gray-400 text-sm leading-relaxed mb-7 max-w-xs mx-auto text-center">
-        A friend invited you to join <span className="font-semibold text-indigo-600">NextMCQ</span>. Complete your profile to claim your bonus coins.
+        A friend invited you to join <span className="font-semibold text-indigo-400">NextMCQ</span>. Complete your profile to claim your bonus coins.
       </p>
 
-      <div className="bg-amber-50 border border-amber-100 rounded-2xl p-4 mb-6 flex items-center gap-4">
-        <div className="w-11 h-11 bg-amber-100 rounded-xl grid place-items-center shrink-0">
-          <Coins className="w-5 h-5 text-amber-600" />
+      <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-4 mb-6 flex items-center gap-4">
+        <div className="w-11 h-11 bg-amber-500/20 rounded-xl grid place-items-center shrink-0">
+          <Coins className="w-5 h-5 text-amber-400" />
         </div>
         <div>
-          <p className="font-semibold text-amber-900 text-sm">Bonus coins waiting</p>
-          <p className="text-amber-600 text-xs mt-0.5">Claim by completing your profile below</p>
+          <p className="font-semibold text-amber-200 text-sm">Bonus coins waiting</p>
+          <p className="text-amber-400 text-xs mt-0.5">Claim by completing your profile below</p>
         </div>
       </div>
 
-      <p className="text-xs text-gray-400 mb-7 text-center">
+      <p className="text-xs text-gray-500 mb-7 text-center">
         Referral code:{' '}
-        <span className="font-mono font-semibold text-gray-600 bg-gray-100 px-2 py-0.5 rounded">{code}</span>
+        <span className="font-mono font-semibold text-gray-200 bg-white/10 px-2 py-0.5 rounded">{code}</span>
       </p>
 
       <PrimaryBtn onClick={onNext}>Get Started →</PrimaryBtn>
-      <p className="text-xs text-gray-400 mt-4 text-center">Takes less than 2 minutes</p>
+      <p className="text-xs text-gray-500 mt-4 text-center">Takes less than 2 minutes</p>
     </div>
   );
 }
@@ -292,15 +245,15 @@ function WelcomeStep({ code, onNext }) {
 function EmailStep({ email, setEmail, onNext, loading, error }) {
   return (
     <div className="step-in">
-      <h2 className="text-2xl font-semibold text-gray-900 mb-1">Enter your email</h2>
+      <h2 className="text-2xl font-semibold text-white mb-1">Enter your email</h2>
       <p className="text-gray-400 text-sm mb-7">We'll send a 6-digit code — no password needed.</p>
 
       <Field label="Email address">
         <input type="email" value={email} onChange={e => setEmail(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && onNext()} placeholder="you@example.com"
           disabled={loading}
-          className="w-full border border-gray-200 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-50 rounded-xl px-4 py-3.5 text-gray-900 placeholder-gray-300 outline-none transition-all disabled:opacity-50 text-sm" />
-        {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+          className="w-full border border-white/20 bg-white/6 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20 rounded-xl px-4 py-3.5 text-white placeholder-white/30 outline-none transition-all disabled:opacity-50 text-sm" />
+        {error && <p className="text-red-400 text-sm mt-2">{error}</p>}
       </Field>
 
       <PrimaryBtn onClick={onNext} disabled={!email.trim()} loading={loading}>
@@ -315,21 +268,21 @@ function OtpStep({ email, otp, setOtp, onNext, onBack, loading, error }) {
   return (
     <div className="step-in">
       <BackBtn onClick={onBack} />
-      <h2 className="text-2xl font-semibold text-gray-900 mb-1">Check your email</h2>
+      <h2 className="text-2xl font-semibold text-white mb-1">Check your email</h2>
       <p className="text-gray-400 text-sm mb-1">6-digit code sent to</p>
-      <p className="text-indigo-600 font-medium text-sm mb-7">{email}</p>
+      <p className="text-indigo-400 font-medium text-sm mb-7">{email}</p>
 
       <OtpBoxes value={otp} onChange={setOtp} disabled={loading} />
-      {error && <p className="text-red-500 text-sm mt-3 text-center">{error}</p>}
+      {error && <p className="text-red-400 text-sm mt-3 text-center">{error}</p>}
 
       <div className="mt-6">
         <PrimaryBtn onClick={onNext} disabled={otp.replace(/ /g, '').length < 6} loading={loading}>
           {!loading && 'Verify →'}
         </PrimaryBtn>
       </div>
-      <p className="text-xs text-gray-400 text-center mt-4">
+      <p className="text-xs text-gray-500 text-center mt-4">
         Didn't get it?{' '}
-        <button className="text-indigo-500 font-medium hover:underline">Resend code</button>
+        <button className="text-indigo-400 font-medium hover:underline">Resend code</button>
       </p>
     </div>
   );
@@ -348,13 +301,13 @@ function ProfileStep({ form, setForm, code, onSubmit, loading, error }) {
 
   return (
     <div className="step-in">
-      <h2 className="text-2xl font-semibold text-gray-900 mb-1">Complete your profile</h2>
+      <h2 className="text-2xl font-semibold text-white mb-1">Complete your profile</h2>
       <p className="text-gray-400 text-sm mb-7">Almost there — just a few details.</p>
 
       <Field label="Full name">
         <input type="text" value={form.name} onChange={e => set('name', e.target.value)}
           placeholder="Your full name" disabled={loading}
-          className="w-full border border-gray-200 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-50 rounded-xl px-4 py-3.5 text-gray-900 placeholder-gray-300 outline-none transition-all disabled:opacity-50 text-sm" />
+          className="w-full border border-white/20 bg-white/6 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20 rounded-xl px-4 py-3.5 text-white placeholder-white/30 outline-none transition-all disabled:opacity-50 text-sm" />
       </Field>
 
       <Field label="I am a">
@@ -363,8 +316,8 @@ function ProfileStep({ form, setForm, code, onSubmit, loading, error }) {
             <button key={r} onClick={() => set('role', r)} disabled={loading}
               className={`py-3 rounded-xl border font-medium capitalize text-sm transition-all ${
                 form.role === r
-                  ? 'border-indigo-500 bg-indigo-50 text-indigo-700'
-                  : 'border-gray-200 text-gray-500 hover:border-gray-300 bg-white'
+                  ? 'border-indigo-400 bg-indigo-500/20 text-indigo-300'
+                  : 'border-white/20 text-gray-400 hover:border-white/30 bg-white/5'
               }`}>
               {r === 'student' ? '🎓 Student' : '👨‍🏫 Teacher'}
             </button>
@@ -374,7 +327,7 @@ function ProfileStep({ form, setForm, code, onSubmit, loading, error }) {
 
       {form.role === 'student' && (
         <>
-          <Field label="Class" badge={<span className="text-[10px] text-gray-400 font-normal">optional</span>}>
+          <Field label="Class" badge={<span className="text-[10px] text-gray-500 font-normal">optional</span>}>
             <div className="flex gap-2">
               {CLASSES.map(c => (
                 <button key={c.v} onClick={() => {
@@ -384,8 +337,8 @@ function ProfileStep({ form, setForm, code, onSubmit, loading, error }) {
                 }} disabled={loading}
                   className={`flex-1 py-2.5 rounded-xl border text-sm font-medium transition-all ${
                     form.class === c.v
-                      ? 'border-indigo-500 bg-indigo-50 text-indigo-700'
-                      : 'border-gray-200 text-gray-500 hover:border-gray-300 bg-white'
+                      ? 'border-indigo-400 bg-indigo-500/20 text-indigo-300'
+                      : 'border-white/20 text-gray-400 hover:border-white/30 bg-white/5'
                   }`}>
                   {c.l}
                 </button>
@@ -400,8 +353,8 @@ function ProfileStep({ form, setForm, code, onSubmit, loading, error }) {
                   <button key={s.v} onClick={() => set('semester', s.v)} disabled={loading}
                     className={`flex-1 py-2.5 rounded-xl border text-sm font-medium transition-all ${
                       form.semester === s.v
-                        ? 'border-indigo-500 bg-indigo-50 text-indigo-700'
-                        : 'border-gray-200 text-gray-500 hover:border-gray-300 bg-white'
+                        ? 'border-indigo-400 bg-indigo-500/20 text-indigo-300'
+                        : 'border-white/20 text-gray-400 hover:border-white/30 bg-white/5'
                     }`}>
                     {s.l}
                   </button>
@@ -413,15 +366,15 @@ function ProfileStep({ form, setForm, code, onSubmit, loading, error }) {
       )}
 
       <Field label="Referral code"
-        badge={<span className="text-[10px] font-semibold bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Auto-applied</span>}>
+        badge={<span className="text-[10px] font-semibold bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full">Auto-applied</span>}>
         <div className="relative">
           <input readOnly value={code}
-            className="w-full border border-amber-200 bg-amber-50 rounded-xl px-4 py-3.5 font-mono font-semibold text-amber-800 tracking-widest cursor-not-allowed pr-10 text-sm" />
+            className="w-full border border-amber-500/30 bg-amber-500/10 rounded-xl px-4 py-3.5 font-mono font-semibold text-amber-300 tracking-widest cursor-not-allowed pr-10 text-sm" />
           <div className="absolute right-3.5 top-1/2 -translate-y-1/2">
-            <Lock className="w-4 h-4 text-amber-400" />
+            <Lock className="w-4 h-4 text-amber-500" />
           </div>
         </div>
-        <p className="text-amber-600 text-xs mt-1.5">Bonus coins will be credited automatically.</p>
+        <p className="text-amber-400 text-xs mt-1.5">Bonus coins will be credited automatically.</p>
       </Field>
 
       <ErrBox msg={error} />
@@ -447,13 +400,13 @@ function SuccessStep({ name }) {
           style={{ background: 'linear-gradient(135deg, #6366f1 0%, #7c3aed 100%)' }}>
           <span className="text-5xl select-none">🎉</span>
         </div>
-        <div className="absolute -bottom-2 -right-2 w-9 h-9 bg-emerald-500 rounded-2xl grid place-items-center shadow-lg ring-2 ring-white">
+        <div className="absolute -bottom-2 -right-2 w-9 h-9 bg-emerald-500 rounded-2xl grid place-items-center shadow-lg ring-2 ring-[#030712]">
           <Check className="w-5 h-5 text-white" strokeWidth={3} />
         </div>
       </div>
 
       {/* Headline */}
-      <h2 className="text-3xl font-bold text-gray-900 mb-4 tracking-tight">
+      <h2 className="text-3xl font-bold text-white mb-4 tracking-tight">
         Your account is live 🚀
       </h2>
 
@@ -463,7 +416,7 @@ function SuccessStep({ name }) {
       </p>
 
       {/* Reward hint pill — no amounts */}
-      <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-medium px-4 py-2 rounded-full mb-8">
+      <div className="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-medium px-4 py-2 rounded-full mb-8">
         <span>🪙</span>
         <span>Coins &amp; bonuses added to your account</span>
         <span>✓</span>
@@ -479,8 +432,8 @@ function SuccessStep({ name }) {
           <span className="block font-semibold">Google Play</span>
         </span>
       </a>
-      <p className="text-xs text-gray-400">
-        Sign in with <span className="font-medium text-gray-600">the same email</span> you used here
+      <p className="text-xs text-gray-500">
+        Sign in with <span className="font-medium text-gray-300">the same email</span> you used here
       </p>
     </div>
   );
@@ -539,20 +492,11 @@ export default function OnboardingFlow({ referralCode }) {
   };
 
   return (
-    <div className="min-h-screen flex bg-white">
+    <div className="min-h-screen flex bg-[#030712]" style={DOT_DARK}>
       <LeftPanel />
 
       {/* Right panel */}
       <div className="flex-1 flex flex-col justify-center items-center px-6 py-12 min-h-screen">
-        {/* Mobile logo */}
-        <div className="lg:hidden flex items-center gap-2 mb-10">
-          <div className="w-8 h-8 rounded-xl grid place-items-center shadow-sm"
-            style={{ background: 'linear-gradient(135deg, #6366f1 0%, #7c3aed 100%)' }}>
-            <span className="text-white font-bold text-sm">N</span>
-          </div>
-          <span className="font-semibold text-gray-900">NextMCQ</span>
-        </div>
-
         <div className="w-full max-w-md">
           {STEPS.includes(step) && <ProgressBar step={step} />}
 
