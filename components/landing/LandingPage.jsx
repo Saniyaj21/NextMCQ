@@ -230,21 +230,35 @@ function Hero() {
 /* ──────────────────────────────────────────────────────────────────
    Trust Bar — animated counters
 ────────────────────────────────────────────────────────────────── */
+function formatK(n) {
+  if (n >= 1000) return `${Math.floor(n / 1000)}K+`;
+  return `${n}+`;
+}
+
 function TrustBar() {
   const [ref, inView] = useInView(0.4);
-  const c1 = useCounter(10, inView);
-  const c2 = useCounter(25, inView);
-  const c3 = useCounter(5, inView);
+  const [stats, setStats] = useState({ users: 10000, questions: 25000, battles: 5000 });
+
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/stats`)
+      .then(r => r.json())
+      .then(res => { if (res.success) setStats(res.data); })
+      .catch(() => {});
+  }, []);
+
+  const c1 = useCounter(stats.users, inView);
+  const c2 = useCounter(stats.questions, inView);
+  const c3 = useCounter(stats.battles, inView);
 
   return (
     <div className="border-b border-gray-100 py-10 bg-white">
       <div ref={ref} className="max-w-5xl mx-auto px-6">
         <div className="flex flex-wrap items-center justify-center gap-10 sm:gap-16">
           {[
-            { icon: '🎓', val: `${c1}K+`, label: 'Students' },
-            { icon: '📝', val: `${c2}K+`, label: 'Questions' },
-            { icon: '⚔️', val: `${c3}K+`, label: 'Battles fought' },
-            { icon: '🏫', val: null,       label: 'Class 10, 11 & 12' },
+            { icon: '🎓', val: formatK(c1), label: 'Students' },
+            { icon: '📝', val: formatK(c2), label: 'Questions' },
+            { icon: '⚔️', val: formatK(c3), label: 'Battles fought' },
+            { icon: '🏫', val: null,         label: 'Class 10, 11 & 12' },
           ].map(({ icon, val, label }) => (
             <div key={label} className="flex items-center gap-3">
               <span className="text-2xl">{icon}</span>
@@ -411,65 +425,88 @@ function HowItWorks() {
 }
 
 
-/* ──────────────────────────────────────────────────────────────────
-   Download CTA
-────────────────────────────────────────────────────────────────── */
-function DownloadCTA() {
-  return (
-    <section className="bg-white pb-28">
-      <div className="max-w-5xl mx-auto px-6">
-        <Reveal>
-          <div className="relative overflow-hidden bg-[#030712] rounded-3xl px-8 py-20 text-center">
-            <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-64 rounded-full opacity-25"
-              style={{ background: 'radial-gradient(circle, #1d4ed8, transparent 65%)' }} />
-            <div className="pointer-events-none absolute bottom-0 right-0 w-64 h-64 rounded-full opacity-15 translate-x-1/4 translate-y-1/4"
-              style={{ background: 'radial-gradient(circle, #2563eb, transparent 65%)' }} />
-
-            <h2 className="relative text-3xl sm:text-4xl font-bold text-white mb-4 tracking-tight">
-              Ready to top your class?
-            </h2>
-            <p className="relative text-gray-400 text-base max-w-sm mx-auto mb-10 leading-relaxed">
-              Free forever. No ads. No subscription. Just MCQ practice, battles, and glory.
-            </p>
-            <PSBtn variant="light" size="lg" className="relative mx-auto mb-10" />
-            <div className="relative flex flex-wrap justify-center gap-6 text-gray-500 text-sm">
-              {['Free forever', 'No subscription', 'No ads'].map(t => (
-                <span key={t} className="flex items-center gap-1.5">
-                  <svg className="w-3.5 h-3.5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                  </svg>
-                  {t}
-                </span>
-              ))}
-            </div>
-          </div>
-        </Reveal>
-      </div>
-    </section>
-  );
-}
 
 /* ──────────────────────────────────────────────────────────────────
    Footer
 ────────────────────────────────────────────────────────────────── */
 function Footer() {
-  return (
-    <footer className="bg-[#030712] py-16" style={DOT_DARK}>
-      <div className="max-w-5xl mx-auto px-6 flex flex-col items-center text-center">
-        <div className="w-24 h-24 rounded-3xl overflow-hidden bg-white shadow-md mb-4">
-          <Image src="/nextmcq-logo.png" alt="NextMCQ" width={96} height={96} className="w-full h-full object-contain" />
-        </div>
-        <p className="text-gray-500 text-sm max-w-xs leading-relaxed mb-8">
-          MCQ practice for Indian students — Class 10, 11 &amp; 12.
-        </p>
+  const links = {
+    Product: [
+      { label: 'Features', href: '#features' },
+      { label: 'How it works', href: '#how' },
+      { label: 'Download App', href: PS_URL },
+    ],
+    Legal: [
+      { label: 'Privacy Policy', href: '/privacy' },
+      { label: 'Terms of Use', href: '/terms' },
+      { label: 'Contact Us', href: 'mailto:support@nextmcq.com' },
+    ],
+  };
 
-        <div className="flex flex-wrap justify-center gap-6 text-sm mb-10">
-          {['Privacy Policy', 'Terms of Use', 'Contact'].map(l => (
-            <a key={l} href="#" className="text-gray-500 hover:text-gray-300 transition-colors">{l}</a>
+  return (
+    <footer className="relative overflow-hidden bg-[#030712]" style={DOT_DARK}>
+      {/* Glow blobs — mirror hero */}
+      <div className="pointer-events-none absolute -top-48 -left-48 w-[500px] h-[500px] rounded-full opacity-20"
+        style={{ background: 'radial-gradient(circle, #1d4ed8, transparent 65%)' }} />
+      <div className="pointer-events-none absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full opacity-15 translate-x-1/4 translate-y-1/4"
+        style={{ background: 'radial-gradient(circle, #2563eb, transparent 65%)' }} />
+
+      <div className="relative max-w-5xl mx-auto px-6 pt-16 pb-10">
+        {/* Top divider */}
+        <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent mb-14" />
+
+        {/* Main grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-14">
+          {/* Brand column */}
+          <div className="md:col-span-1 flex flex-col gap-5">
+            <a href="/" className="flex items-center gap-3 w-fit">
+              <div className="w-10 h-10 rounded-xl overflow-hidden bg-white shadow-sm ring-1 ring-white/10 shrink-0">
+                <Image src="/nextmcq-logo.png" alt="NextMCQ" width={40} height={40} className="w-full h-full object-contain" />
+              </div>
+              <span className="font-bold text-white text-[17px] tracking-tight">NextMCQ</span>
+            </a>
+            <p className="text-gray-500 text-sm leading-relaxed max-w-[220px]">
+              MCQ practice for Class 10, 11 &amp; 12 — battles, leaderboards &amp; rewards.
+            </p>
+            <a href={PS_URL} target="_blank" rel="noopener noreferrer"
+              className="ps-btn inline-flex w-fit bg-white/10 border border-white/15 hover:bg-white/20 text-white px-4 py-2.5 text-sm backdrop-blur-sm transition-all">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 opacity-75">
+                <path d="M12 16L12 8"/><path d="M8 12l4 4 4-4"/>
+                <rect x="3" y="3" width="18" height="18" rx="3"/>
+              </svg>
+              <span className="font-semibold">Download on Android</span>
+            </a>
+          </div>
+
+          {/* Link columns */}
+          {Object.entries(links).map(([heading, items]) => (
+            <div key={heading}>
+              <p className="text-white/40 text-[11px] font-semibold uppercase tracking-widest mb-4">{heading}</p>
+              <ul className="flex flex-col gap-3">
+                {items.map(({ label, href }) => (
+                  <li key={label}>
+                    <a href={href}
+                      className="text-gray-500 hover:text-gray-200 text-sm transition-colors duration-200">
+                      {label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
           ))}
         </div>
 
-        <p className="text-gray-600 text-xs">© {new Date().getFullYear()} NextMCQ. Built for Indian students.</p>
+        {/* Bottom bar */}
+        <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent mb-8" />
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-gray-600 text-xs">
+            © {new Date().getFullYear()} NextMCQ. Built with ❤️ for Indian students.
+          </p>
+          <div className="flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-gray-600 text-xs">Available on Android · Free</span>
+          </div>
+        </div>
       </div>
     </footer>
   );
@@ -486,7 +523,6 @@ export default function LandingPage() {
       <TrustBar />
       <Features />
       <HowItWorks />
-      <DownloadCTA />
       <Footer />
     </div>
   );

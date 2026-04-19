@@ -1,11 +1,13 @@
 'use client';
 
 import { useState, useRef } from 'react';
+import { api } from '@/lib/api';
 import {
   BookOpen, Swords, Trophy, Coins,
   Sparkles, Lock, ChevronLeft, Check,
   Gift,
 } from 'lucide-react';
+import { FaGooglePlay } from 'react-icons/fa';
 
 const PS_URL = 'https://play.google.com/store/apps/details?id=com.nextmcq.app';
 
@@ -432,50 +434,46 @@ function ProfileStep({ form, setForm, code, onSubmit, loading, error }) {
 
 /* ── Step: Success ─────────────────────────────────────────────── */
 function SuccessStep({ name }) {
+  const firstName = name ? name.split(' ')[0] : null;
+
   return (
     <div className="step-in text-center">
-      <div className="relative inline-block mb-6">
-        <div className="w-20 h-20 rounded-2xl grid place-items-center mx-auto shadow-xl"
+
+      {/* Hero icon */}
+      <div className="relative inline-flex items-center justify-center mb-6">
+        <div className="absolute inset-0 rounded-full blur-2xl scale-150 opacity-30"
+          style={{ background: 'radial-gradient(circle, #6366f1, #7c3aed)' }} />
+        <div className="relative w-24 h-24 rounded-3xl grid place-items-center shadow-2xl"
           style={{ background: 'linear-gradient(135deg, #6366f1 0%, #7c3aed 100%)' }}>
-          <Sparkles className="w-9 h-9 text-white" />
+          <span className="text-5xl select-none">🎉</span>
         </div>
-        <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-emerald-500 rounded-xl grid place-items-center shadow-md">
-          <Check className="w-4 h-4 text-white" strokeWidth={3} />
+        <div className="absolute -bottom-2 -right-2 w-9 h-9 bg-emerald-500 rounded-2xl grid place-items-center shadow-lg ring-2 ring-white">
+          <Check className="w-5 h-5 text-white" strokeWidth={3} />
         </div>
       </div>
 
-      <h2 className="text-2xl font-semibold text-gray-900 mb-2">
-        You're all set{name ? `, ${name.split(' ')[0]}` : ''}!
+      {/* Headline */}
+      <h2 className="text-3xl font-bold text-gray-900 mb-4 tracking-tight">
+        Your account is live 🚀
       </h2>
-      <p className="text-gray-400 text-sm mb-7 max-w-xs mx-auto leading-relaxed">
-        Download NextMCQ and sign in with the same email. Your account and coins are ready.
+
+      {/* Sub-copy */}
+      <p className="text-gray-400 text-sm max-w-[260px] mx-auto leading-relaxed mb-8">
+        Your rewards are already waiting inside the app. Just download and sign in — it's all there.
       </p>
 
-      <div className="bg-gray-50 border border-gray-200 rounded-2xl p-5 mb-7 text-left space-y-3">
-        {[
-          { label: 'Welcome bonus', val: '+500 🪙' },
-          { label: 'Referral bonus', val: '+50 🪙' },
-        ].map(r => (
-          <div key={r.label} className="flex justify-between items-center border-b border-gray-100 pb-3">
-            <span className="text-gray-500 text-sm">{r.label}</span>
-            <span className="font-semibold text-amber-600 text-sm">{r.val}</span>
-          </div>
-        ))}
-        <div className="flex justify-between items-center pt-1">
-          <span className="font-medium text-gray-900 text-sm">Total coins ready</span>
-          <span className="font-bold text-indigo-700">550 🪙</span>
-        </div>
+      {/* Reward hint pill — no amounts */}
+      <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-medium px-4 py-2 rounded-full mb-8">
+        <span>🪙</span>
+        <span>Coins &amp; bonuses added to your account</span>
+        <span>✓</span>
       </div>
 
+      {/* CTA */}
       <a href={PS_URL} target="_blank" rel="noopener noreferrer"
-        className="ps-btn text-white w-full justify-center mb-3 text-[15px] py-4"
+        className="ps-btn text-white w-full justify-center mb-3 text-[15px] py-4 shadow-lg shadow-indigo-500/30"
         style={{ background: 'linear-gradient(135deg, #6366f1 0%, #7c3aed 100%)' }}>
-        <svg width="16" height="18" viewBox="0 0 16 18" fill="none">
-          <path d="M1 1L9 9L1 17" stroke="#EA4335" strokeWidth="1.8" strokeLinecap="round" />
-          <path d="M1 1L13.5 9H9" fill="#34A853" />
-          <path d="M1 1L9 9L1 17" fill="#4285F4" opacity=".55" />
-          <path d="M1 17L9 9L13.5 9" fill="#FBBC05" />
-        </svg>
+        <FaGooglePlay className="w-5 h-5 shrink-0" />
         <span className="leading-none">
           <span className="block text-[9px] opacity-70 mb-[2px]">GET IT ON</span>
           <span className="block font-semibold">Google Play</span>
@@ -496,20 +494,48 @@ export default function OnboardingFlow({ referralCode }) {
   const [form, setForm] = useState({ name: '', role: 'student', class: null, semester: '1' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-
-  const fake = ms => new Promise(r => setTimeout(r, ms));
+  const [token, setToken] = useState(null);
 
   const sendOtp = async () => {
-    if (!email.trim()) return; setError(''); setLoading(true);
-    await fake(900); setLoading(false); setStep('otp');
+    if (!email.trim()) return;
+    setError(''); setLoading(true);
+    try {
+      await api.post('/auth/send-otp', { email });
+      setStep('otp');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
+
   const verifyOtp = async () => {
-    if (otp.replace(/ /g, '').length < 6) return; setError(''); setLoading(true);
-    await fake(900); setLoading(false); setStep('profile');
+    if (otp.replace(/ /g, '').length < 6) return;
+    setError(''); setLoading(true);
+    try {
+      const res = await api.post('/auth/verify-otp', { email, otp });
+      setToken(res.data.token);
+      setStep('profile');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
+
   const submit = async () => {
-    if (!form.name.trim()) return; setError(''); setLoading(true);
-    await fake(1000); setLoading(false); setStep('success');
+    if (!form.name.trim()) return;
+    setError(''); setLoading(true);
+    try {
+      const payload = { name: form.name, role: form.role, referralCode: referralCode };
+      if (form.class) { payload.class = form.class; payload.semester = form.semester; }
+      await api.post('/auth/complete-onboarding', payload, token);
+      setStep('success');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
