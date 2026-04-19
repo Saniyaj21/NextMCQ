@@ -15,8 +15,8 @@ export const metadata = {
   title: "NextMCQ — Practice Smarter, Score Higher",
   description: "MCQ practice app for Class 10, 11 & 12 students. Battle friends, climb leaderboards, and earn rewards.",
   openGraph: {
-    title: "NextMCQ — Practice Smarter, Score Higher",
-    description: "MCQ practice app for Class 10, 11 & 12 students. Battle friends, climb leaderboards, and earn rewards.",
+    title: "NextMCQ",
+    description: "Free MCQ practice app for Class 10, 11 & 12.",
     url: "https://nextmcq.vercel.app",
     siteName: "NextMCQ",
     images: [{ url: "https://nextmcq.vercel.app/nextmcq-logo.png", width: 512, height: 512, alt: "NextMCQ" }],
@@ -25,8 +25,8 @@ export const metadata = {
   },
   twitter: {
     card: "summary",
-    title: "NextMCQ — Practice Smarter, Score Higher",
-    description: "MCQ practice app for Class 10, 11 & 12 students. Battle friends, climb leaderboards, and earn rewards.",
+    title: "NextMCQ",
+    description: "Free MCQ practice app for Class 10, 11 & 12.",
     images: ["https://nextmcq.vercel.app/nextmcq-logo.png"],
   },
 };
